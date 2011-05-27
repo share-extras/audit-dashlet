@@ -84,6 +84,8 @@ the dashlet into one of the columns from the list of dashlets.
 
     - to search for a colon (:), use the field prefix, eg; field:.+:.+ or values:[^:]+: etc... otherwise the colon will be interpreted
       as a field identifier
+    
+    - noderefs in the values will be detected, and "enhanced" with a link to the docdetails page of that noderef
 
     - multi field search is currently not supported, e.g +id:95 -name:romain. Would have to support ( ) , and/or grouping ,etc ...
 
