@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>Audit Application</shortname>
+   <description>Displays live data for a given audit application</description>
+   <url>/components/dashlets/audit-application</url>
+   <family>dashlet</family>
+</webscript>

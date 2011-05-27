@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Audit Dashlet Configuration Dialog</shortname>
+  <description>Configuration dialog for the sample audit dashlet</description>
+  <url>/modules/dashlet/audit-application/config</url>
+</webscript>

@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>Audit Dashlet Application List</shortname>
+   <description>Application List Data Source</description>
+   <url>/modules/dashlets/audit-application/applist</url>
+   <format default="json">extension</format>
+</webscript>

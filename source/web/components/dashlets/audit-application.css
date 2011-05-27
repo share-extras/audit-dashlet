@@ -1,0 +1,76 @@
+.audit-application-dashlet .message
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.audit-application-dashlet .entries,
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+   height: 90%;
+}
+
+.audit-application-dashlet .body,
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.audit-application-dashlet .yui-dt table
+{
+    width: 97%;
+    border-collapse: collapse;
+    border: 1px solid #CBCBCB;
+}
+
+.dashlet .customScrollableList
+{
+   padding: 0;
+   overflow: auto;
+   position: relative;
+}
+
+.audit-application-dashlet .refresh
+{
+   background-image: url('refresh-icon.png');
+   background-repeat: no-repeat;
+   float: right;
+   height: 16px;
+   left: -8px;
+   position: relative;
+   top: -22px;
+   width: 16px;
+}
+
+.audit-application-dashlet .refresh a,
+.audit-application-dashlet .refresh a:active,
+.audit-application-dashlet .refresh a:hover
+{
+   display: block;
+   height: 16px;
+   text-decoration: none;
+   width: 16px;
+}
+
+.audit-application-dashlet .shy
+{
+    display: none;
+}
+
+.audit-application-dashlet .invalid-regex
+{
+    background-color: #ffa6a6;
+}
+
+.audit-application-dashlet .valid-regex
+{
+    background-color: #a6ffa6;
+}
+
+.audit-application-dashlet .regex-highlight
+{
+    font-weight:bold;
+    background-color: #ffffa6;
+}
+
