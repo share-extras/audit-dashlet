@@ -301,7 +301,7 @@
 	    // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf
 	    // These characters have been reserved for in-process usage by the unicode chart, and are guaranteed to not map 
 	    // to an actual character, in any alphabet.Therefore they won't need to be escaped throughout the string.
-	    // prespan space : 
+	    // prefix : an optional prefix before the span
 	    String.prototype.swapHighlightMarkers = function(prefix)
 	    {
 		return this.replace(/\uFFFE/g, (prefix ? prefix : "") + "<span class='regex-highlight'>").replace(/\uFFFF/g,"</span>");
@@ -328,7 +328,7 @@
 	    String.prototype.elideHighlightMarkers = function(open_marker_char, close_marker_char)
 	    {
 		var opened=false; var skip_next_close_stack=[];
-		var rebuild="";
+		var rebuild=""; var c ='';
 				
 		for(var j=0; j< this.length; j++)
 		{
