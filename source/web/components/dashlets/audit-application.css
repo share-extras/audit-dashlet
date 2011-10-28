@@ -22,6 +22,8 @@
     width: 97%;
     border-collapse: collapse;
     border: 1px solid #CBCBCB;
+    /* google chrome : wrapping long, non-spaced, blocks of text */
+    word-break: break-all;
 }
 
 .dashlet .customScrollableList
