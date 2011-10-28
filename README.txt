@@ -93,6 +93,11 @@ the dashlet into one of the columns from the list of dashlets.
 
 Changelog
 ---------
+0.31:
+    - build.properties more consistent with other projects
+    - distributed jar had a wrong french bundle filename
+    - added small precision in the README
+
 0.3:
     - some formatting, commenting, refactored to separate search box UI background coloring from the actual filtering
     - highlighting can now be expressed with CSS, rather than hardcoded html bold
