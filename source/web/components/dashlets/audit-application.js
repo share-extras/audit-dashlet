@@ -553,9 +553,9 @@
 					  {
 						var unparsed=oData;
 						// attempt to "simplify" the date for old/legacy browsers. drop the milliseconds and timezone
-						if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 8) 
+						if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 7) 
 						    oData=oData.replace(/\-/ig, '/').split('.')[0];
-						else if (YAHOO.env.ua.ie >= 8)
+						else if (YAHOO.env.ua.ie >= 7)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').replace(/\.\d\d\d/ig,"").replace(/\+.*/ig,"");
 						else if ( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').split('.')[0];

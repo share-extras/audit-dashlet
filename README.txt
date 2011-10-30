@@ -64,7 +64,7 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
       UI Name          		Description                                              Audit API corresponding parameter
       -----------------------------------------------------------------------------------------------------------
     - value filter		filter on the audit value (exact match,optional)		'value'
-    - limit			maximum number of audit entries retrieved (optional)		'limit'
+    - limit			maximum number of audit entries retrieved (optional)		'limit' (default 100)
     - Additional Query params	other possible query parameters (optional)			from/to time, from/to id, user
 
     (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
@@ -112,6 +112,7 @@ Changelog
 	See the wiki documentation (http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query) and the web script description.
     - datatable css fix for google chrome, and various css tweaks
     - Added help link opposite the config link
+    - tweaked what links (configure, help) are shown to admins / site managers
 
 0.31:
     - build.properties more consistent with other projects
