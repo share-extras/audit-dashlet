@@ -21,7 +21,8 @@
  
 /**
  * Dashboard Audit entries viewing component
- * 
+ *
+ * @author Romain Guinot
  * @namespace Alfresco
  * @class Alfresco.dashlet.AuditApplication
  */
@@ -113,9 +114,54 @@
 	    *
 	    * @property rowsPerPage
 	    * @type int
-	    * @default 10
+	    * @default defaultRowsPerPage
 	    */
-	    rowsPerPage: ""
+	    rowsPerPage: "",
+
+            /**
+            * Additional audit API server side query params
+            *
+            * @property additionalQueryParams
+            * @type string
+            * @default ""
+            */
+            additionalQueryParams: "",
+
+            /**
+            * Whether or not to show the ID column
+            *
+            * @property show_id_column
+            * @type boolean
+            * @default true
+            */
+            show_id_column: "",
+
+            /**
+            * Whether or not to show the user column
+            *
+            * @property show_user_column
+            * @type boolean
+            * @default true
+            */
+            show_user_column: "",
+
+            /**
+            * Whether or not to show the time column
+            *
+            * @property show_time_column
+            * @type boolean
+            * @default true
+            */
+            show_time_column: "",
+
+            /**
+            * Whether or not to show the values column
+            *
+            * @property show_values_column
+            * @type boolean
+            * @default true
+            */
+            show_values_column: ""
 
 	},
 
@@ -227,10 +273,10 @@
 	    this.searchBoxContainer.value = "";
 	    Dom.removeClass(this.searchBoxContainer,'invalid-regex'); 
 	    Dom.removeClass(this.searchBoxContainer,'valid-regex');
-	     
+
 	    // push utility prototypes to String
 	    this.addUtilPrototypes();
-	    
+ 
 	    // Set the title according to selected options (args)
 	    if (this.options.application != "")
 	    {
@@ -245,6 +291,7 @@
 		// an application name has been configured, display the search box
 		Dom.removeClass(this.searchBoxContainer,'shy');
 		Dom.removeClass(this.searchBoxLabelContainer,'shy');
+
 	    }
 	    else
 	    {
@@ -298,7 +345,7 @@
 	 */
 	addUtilPrototypes: function AuditApplication_addUtilPrototypes()
 	{
-	    // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf
+	    // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf.
 	    // These characters have been reserved for in-process usage by the unicode chart, and are guaranteed to not map 
 	    // to an actual character, in any alphabet.Therefore they won't need to be escaped throughout the string.
 	    // prefix : an optional prefix before the span
@@ -358,23 +405,23 @@
 	loadData: function AuditApplication_loadData()
 	{
 	    // define how each column will be formatted. see the response schema for how they are parsed
-	    //{key:"application", label: this.msg("audit.dashlet.th.application"), sortable:true,resizeable:true}, // we filter by app so show the app in the header rather than "wasting" a column              
+	    //{key:"application", label: this.msg("audit.dashlet.field.label.application"), sortable:true,resizeable:true}, // we filter by app so show the app in the header rather than "wasting" a column
 	    var myColumnDefs = 
 	    [
 		{
-		    key:"id", label: this.msg("audit.dashlet.th.id"), sortable:true,resizeable:true,
+		    key:"id", label: this.msg("audit.dashlet.field.label.id"), sortable:true,resizeable:true,
 				formatter:function(elCell, oRecord, oColumn, oData)
 				    {
 					elCell.innerHTML = (oData+"").swapHighlightMarkers();
 				    }
 		},
 		{
-		    key:"user", label: this.msg("audit.dashlet.th.user"), sortable:true,resizeable:true,
+		    key:"user", label: this.msg("audit.dashlet.field.label.user"), sortable:true,resizeable:true,
 				formatter:function(elCell, oRecord, oColumn, oData) 
 				    {
 					    // instead of "hardcoding" the link to the user profile page, use uri templates
-					    // <uri-templates> are loaded from share-config.xml / share-config-custom.xml
-					    // profile page is one of the default predefined uri templates
+					    // <uri-templates> are loaded from share-config.xml / share-config-custom.xml.
+					    // profile page is one of the default predefined uri templates.
 					    var template = Alfresco.constants.URI_TEMPLATES["userprofilepage"];
 					    var HTMLed_username=(oData+"").swapHighlightMarkers();
 					    var unmarked_username=(oData+"").trimHighlightMarkers();
@@ -391,7 +438,7 @@
 				    }
 		},
 		{
-		    key:"time", label: this.msg("audit.dashlet.th.time"), sortable:true, resizeable:true, 
+		    key:"time", label: this.msg("audit.dashlet.field.label.time"), sortable:true, resizeable:true,
 				formatter:function(elCell, oRecord, oColumn, oData) 
 				    {
 					if(oData instanceof Date)
@@ -404,7 +451,7 @@
 				    }
 		},
 		{
-		    key:"values", label: this.msg("audit.dashlet.th.values"), sortable:true,resizeable:true,
+		    key:"values", label: this.msg("audit.dashlet.field.label.values"), sortable:true,resizeable:true,
 				// the formatter is used to make the raw data a little more user friendly, i.e : 
 				// 	- if a noderef pattern is detected, include a doclib link to the doc details page
 				//  - add html <li> elements around each value, and separate key/value with spacing for readability
@@ -473,15 +520,20 @@
 	    ];
 
 
-	    var auditfilterquery= this.options.valueFilter ? "&valueFilter="+encodeURI(this.options.valueFilter) : "";
-	    var limitquery= this.options.limit ? "&limit="+encodeURI(this.options.limit) : "";
+	    var auditValueFilterquery = this.options.valueFilter ? "&valueFilter="+encodeURI(this.options.valueFilter) : "";
+	    var limitquery            = this.options.limit ? "&limit="+encodeURI(this.options.limit) : "";
+	    
+	    // add in any optional server side query param. since they will be separated by a '&', encode it with an unassignable
+	    // unicode code point. it will be decoded by the data webscript that will perform the actual audit API query call.
+	    var additionalQueryParams = this.options.additionalQueryParams ?
+		    "&additionalQueryParams="+encodeURI(this.options.additionalQueryParams.replace(/&/g,'\uFFFF')) : "";
 	    
 	    // build out the URL to the datasource using our own parameters
 	    // the call to the "Audit Application Data Component" webscript will handle the actual audit query call to the repo. 
-	    // Its repsonse will as a 1st step filter out the audit application path to keep the key only for dashlet readability
+	    // Its repsonse will, as a 1st step, filter out the audit application path to keep the key only for dashlet readability
 	    var dataSourceURI=Alfresco.constants.URL_SERVICECONTEXT 
 			+  "components/dashlets/audit-application/entries?application=" 
-			+ encodeURI(this.options.application) + auditfilterquery + limitquery;
+			+ encodeURI(this.options.application) + auditValueFilterquery + limitquery + additionalQueryParams;
 		
 	    var myDataSource = new YAHOO.util.DataSource(dataSourceURI);
 		
@@ -500,21 +552,23 @@
 		    { key: "time", parser:function(oData)
 					  {
 						var unparsed=oData;
-						// attempt to "simplify" the date for old browsers. drop the milliseconds and timezone
-						if(YAHOO.env.ua.ie > 0) 
+						// attempt to "simplify" the date for old/legacy browsers. drop the milliseconds and timezone
+						if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 8) 
 						    oData=oData.replace(/\-/ig, '/').split('.')[0];
-						else if( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
+						else if (YAHOO.env.ua.ie >= 8)
+						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').replace(/\.\d\d\d/ig,"").replace(/\+.*/ig,"");
+						else if ( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').split('.')[0];
 						
 						var date = new Date(oData);
 						if( (date != "Invalid Date") && !isNaN(date))
 						    return date;
-						else 
+						else
 						    return unparsed;
+
 					  }
 		    },
-		    { key: "time"},
-		    { key: "values", parser:function (oData)  
+                    { key: "values", parser:function (oData)
 					    { 
 						// custom parser to get multiple audit key/values pairs as key:pair strings separated by newlines 
 						// easier to handle and format later on
@@ -598,6 +652,7 @@
 			lastPageLinkLabel : this.msg("audit.dashlet.lastPageLinkLabel"), 
 			pageReportTemplate : this.msg("audit.dashlet.pageReportTemplate")
 		    }),
+                    //draggableColumns: true, // (optional)
 		    MSG_EMPTY: this.msg("audit.dashlet.noEntries"),
 		    MSG_LOADING: this.msg("audit.dashlet.loading"),
 		    // initial arrow positionning. corresponds to how the data is coming *presorted*, not a 
@@ -618,9 +673,23 @@
 
 	    this.entriesDataSource = myDataSource;
 	    this.dataTable = myDataTable;
+
+            // column display/hide
+            this.showOrHideColumn(0,this.options.show_id_column);
+            this.showOrHideColumn(1,this.options.show_user_column);
+            this.showOrHideColumn(2,this.options.show_time_column);
+            this.showOrHideColumn(3,this.options.show_values_column);
+
 	},
 
-	
+	showOrHideColumn : function  AuditApplication_showOrHideColumn(column_number,show)
+        {
+            if(show == "show")
+               this.dataTable.showColumn(column_number);
+            else
+                this.dataTable.hideColumn(column_number);
+        },
+
 	// This is the searchbox filter function 
 	// the complete results will be filtered out according to the query before being returned for display 
 	applyRegexFilterOnResponse : function AuditApplication_applyRegexFilterOnResponse(req,res) 
@@ -901,7 +970,18 @@
 	{
 	    this.refreshDataTable_SearchWithinResults();
 	},
-      
+
+	setupBoxListener: function(field)
+	{
+		var configDialog = this.configDialog;
+		YAHOO.util.Event.addListener(Dom.get(configDialog.id + "-checkbox-show_"+field+"_column"), 'click',
+		function()
+		{
+		    Dom.get(configDialog.id + "-show_"+field+"_column").value= (this.checked ? "show" : "hide");
+		});
+
+	},
+		
 	/**
 	* Configuration click handler
 	*
@@ -920,7 +1000,7 @@
 		this.configDialog = new Alfresco.module.SimpleDialog(this.id + "-configDialog").setOptions(
 		{
 		    width: "50em",
-		    
+
 		    // set the template for the config fields, from the "Audit Dashlet Configuration Dialog" webscript
 		    templateUrl: Alfresco.constants.URL_SERVICECONTEXT + "modules/dashlet/audit-application/config",
 		    actionUrl: actionUrl,
@@ -933,11 +1013,19 @@
 			    this.options.limit = Dom.get(this.configDialog.id + "-limit").value;
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				this.options.limit = ""; // invalid values (not strictly positive integers ) are dropped
-			    
+			
 			    this.options.rowsPerPage = Dom.get(this.configDialog.id + "-rowsPerPage").value;
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
 				this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers ) are dropped
-			   
+
+			    this.options.additionalQueryParams = Dom.get(this.configDialog.id + "-additionalQueryParams").value;
+
+			    //table fields to display. in reverse, we use the 'checked' flag to toggle the html field value and save
+			    this.options.show_id_column = Dom.get(this.configDialog.id + "-show_id_column").value;
+			    this.options.show_user_column = Dom.get(this.configDialog.id + "-show_user_column").value;
+			    this.options.show_time_column = Dom.get(this.configDialog.id + "-show_time_column").value;
+			    this.options.show_values_column = Dom.get(this.configDialog.id + "-show_values_column").value;
+
 			    this.init();
 			},
 			scope: this
@@ -946,7 +1034,7 @@
 		    {
 			fn: function AuditApplication_doSetupForm_callback(form)
 			{
-			    Dom.get(this.configDialog.id + "-application").value = this.options.application;
+                            Dom.get(this.configDialog.id + "-application").value = this.options.application;
 			    Dom.get(this.configDialog.id + "-valueFilter").value = this.options.valueFilter;
 			    
 			    // invalid values (not strictly positive integers ) are dropped
@@ -960,6 +1048,33 @@
 				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.defaultRowsPerPage; 
 			    else
 				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.rowsPerPage;
+
+			    // additional audit API server side query params
+			    Dom.get(this.configDialog.id + "-additionalQueryParams").value = this.options.additionalQueryParams;
+
+			    //table fields to display
+			    Dom.get(this.configDialog.id + "-show_id_column").value          =    this.options.show_id_column;
+			    // we use the checkbox value (saved) to position or not the 'checked' flag on the checkbox html element
+			    Dom.get(this.configDialog.id + "-checkbox-show_id_column").checked = (this.options.show_id_column == "show");
+
+			    Dom.get(this.configDialog.id + "-show_user_column").value      =    this.options.show_user_column;
+			    Dom.get(this.configDialog.id + "-checkbox-show_user_column").checked = (this.options.show_user_column == "show");
+
+
+			    Dom.get(this.configDialog.id + "-show_time_column").value      =    this.options.show_time_column;
+			    Dom.get(this.configDialog.id + "-checkbox-show_time_column").checked = (this.options.show_time_column == "show");
+
+
+			    Dom.get(this.configDialog.id + "-show_values_column").value    =    this.options.show_values_column;
+			    Dom.get(this.configDialog.id + "-checkbox-show_values_column").checked = (this.options.show_values_column == "show");
+
+			    // when a checkbox is clicked, a hidden field will be updated with the checkbox state value.
+			    // It's a workaround for the fact that the property persistence service does not seem to like checkboxes
+			    this.setupBoxListener("id");
+			    this.setupBoxListener("user");
+			    this.setupBoxListener("time");
+			    this.setupBoxListener("values");
+
 
 			    // Define AutoComplete controls
 			    // Use a XHRDataSource to get the current list of audit applications from the repo as a json response
@@ -981,7 +1096,7 @@
 			    };
 
 			    // Custom event handler to ensure the application name gets saved and posted back
-			    var myHandler = function(sType, aArgs) 
+			    var appHandler = function(sType, aArgs)
 			    {
 				var myAC = aArgs[0]; // reference back to the AC instance
 				var elLI = aArgs[1]; // reference to the selected LI element
@@ -1003,7 +1118,7 @@
 			    appAutoComplete.applyLocalFilter = true;
 			    appAutoComplete.queryMatchContains = true;
 			    appAutoComplete.formatResult = formatResult;
-			    appAutoComplete.itemSelectEvent.subscribe(myHandler);
+			    appAutoComplete.itemSelectEvent.subscribe(appHandler);
 
 			    // if no app is currently configured, preload the list to display all entries immediately on config popup
 			    // the leading space has been intentionnally added by audit-application-applist.get.json.ftl

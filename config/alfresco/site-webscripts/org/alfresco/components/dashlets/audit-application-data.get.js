@@ -1,20 +1,30 @@
 function main()
 {
-   var application = args.application;   // audit application name (as reported by /api/audit/control
-   var valueFilter = args.valueFilter; // optional : "value" filter on the audit entries. match all
-   var limit = args.limit; //  optional : max entry count retrieved by the repo query
+   var application = args.application;	// audit application name (as reported by /api/audit/control
+   var valueFilter = args.valueFilter; 	// optional : "value" filter on the audit entries. match all
+   var limit = args.limit;		//  optional : max entry count retrieved by the repo query
+
+   // optional : free field to add in other server-side filters (e.g fromTime, ...)
+   var additionalQueryParams = args.additionalQueryParams;
 
    if (application != null)
    {
-      var additionalFilterQuery = valueFilter ? "&value=" + stringUtils.urlEncode(valueFilter) : "";
-      if(logger.isLoggingEnabled()) 
+      var valueFilterQuery = valueFilter ? "&value=" + stringUtils.urlEncode(valueFilter) : "";
+      if(logger.isLoggingEnabled())
 	  logger.log("  application:" +application+ " - " + "valueFilter:" +valueFilter);
 
       var maxEntryCount = limit ? "&limit=" + stringUtils.urlEncode(limit) : "";
+      
+      // decode the '&' param separators from the optional additional params passed in by the dashlet.
+      var optionalAdditionalQueryParams = additionalQueryParams ? ("&" + additionalQueryParams.replace(/\uFFFF/g,'&')) : "";
 
-      var sortOrder =  "&forward=" + false;
+      if(logger.isLoggingEnabled())
+	  logger.log("  optionalAdditionalQueryParams: '" +optionalAdditionalQueryParams+ "'");
+      
+      var sortOrder =  "&forward=" + false; // most recent first
 
-      var uri = "/api/audit/query/"+stringUtils.urlEncode(application)+"?verbose=true" + additionalFilterQuery + sortOrder + maxEntryCount;
+      var uri = "/api/audit/query/"+stringUtils.urlEncode(application)+"?verbose=true"
+		  + valueFilterQuery + sortOrder + maxEntryCount + optionalAdditionalQueryParams;
 
       var connector = remote.connect("alfresco");
       var result = connector.get(uri);
@@ -23,7 +33,7 @@ function main()
 
       if (result.status == status.STATUS_OK)
       {
-	 var rawresponse=result.response+""; // cast rawresponse back into a js string)
+	 var rawresponse = result.response+""; // cast rawresponse back into a js string
 	 //if(logger.isLoggingEnabled()) logger.log("rawresponse:\n"+rawresponse);
 	 
          // the json outputted by the audit template does not quote user and application keys in the ouput

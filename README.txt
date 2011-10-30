@@ -3,60 +3,73 @@ Audit Application dashlet for Alfresco Share
 
 Author: Romain Guinot
 
-This project defines a custom dashlet to display events for a given audit application. 
+This project defines a custom dashlet to display events for any given audit application. 
 
-The dashlet will need to have auditing application(s) already configured, and to be useful some events captured. 
+The dashlet will need to have auditing application(s) already configured, and, to be useful, some events captured.
 See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4) on how to define audit applications and some samples. 
+
+From 3.4.4, also see http://wiki.alfresco.com/wiki/Content_Auditing and http://wiki.alfresco.com/wiki/Audit_Filter.
 
 Installation
 ------------
 
-The dashlet has been developed to install on top of an existing Alfresco
-3.4 installation.
+The dashlet has been developed to install on top of an existing Alfresco 3.4 installation.
 
-An Ant build script is provided to build a JAR file containing the 
-custom files, which can then be installed into the 'tomcat/shared/lib' folder 
-of your Alfresco installation.
+* Users : Prebuilt jar
 
-To build the JAR file, run the following command from the base project 
-directory.
+    A prebuilt jar is provided. You only need to copy it to <tomcat-home>/shared/lib.
 
-    ant clean dist-jar
+* Developers : Building the jar
 
-The command should build a JAR file named sample-audit-dashlet.jar
-in the 'dist' directory within your project.
+    For developers, an Ant build script is provided to build a JAR file containing the
+    custom files, which can then be installed into the 'tomcat/shared/lib' folder
+    of your Alfresco installation.
 
-To deploy the dashlet files into a local Tomcat instance for testing, you can 
-use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
-property in Ant.
+    To build the JAR file, run the following command from the base project
+    directory.
 
-    ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
+	ant clean dist-jar
 
-Once you have run this you will need to restart Tomcat so that the classpath 
-resources in the JAR file are picked up.
+    The command should build a JAR file named sample-audit-dashlet.jar in the 'dist' directory within your project.
 
-As an alternative, you may also copy the exploded files in your classpath, but they must have the classpath tree than the one in the jar. 
-If using development/debug mode for the web framework, you will not need to restart tomcat, but you may have to clear your 
-browser's cache. 
+    To deploy the dashlet files into a local Tomcat instance for testing, you can
+    use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
+    property in Ant.
+
+	ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
+
+    Once you have run this you will need to restart Tomcat so that the classpath resources in the JAR file are picked up.
+
+    As an alternative, you may also copy the exploded files in your classpath, but they must have the classpath tree
+    than the one in the jar. If using development/debug mode for the web framework, you will not need to restart tomcat,
+    but you may have to clear your browser's cache.
 
 Using the dashlet
 -----------------
 
-Log in to Alfresco Share and navigate to a site or user dashboard. Click the 
-Customize Dashboard button to edit the contents of the dashboard and drag 
-the dashlet into one of the columns from the list of dashlets.
+Log in to Alfresco Share and navigate to a site or user dashboard. Click the  'Customize Dashboard' button to edit the contents
+of the dashboard and drag the dashlet into one of the columns from the list of dashlets.
 
  * Configuration : 
 
     Click Configure to choose an existing audit application. Results will appear as you type and will be matched 
     against the live list of audit applications as reported by /api/audit/control. 
 
-    For convenience, application names are prepended with a space. So by typing a leading space in the search box, 
-    you will see the full list of applications in the suggestions. May be useful if you don't know what application name to search for. 
+    For convenience, the list will pop out when opening the configure dialog with no applications currently configured.
+    Could be useful if you don't know what application name to search for.
 
-    If you want you can also select an additional value filter to limit the results.
-    This server-side filter correspond to the "value" parameter optionally passed to the audit query. 
-    (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side
+    The number of data rows (audit events) per page is configurable by the 'Entries per page' parameter.
+
+    Additional server side filters are configurable :
+      UI Name          		Description                                              Audit API corresponding parameter
+      -----------------------------------------------------------------------------------------------------------
+    - value filter		filter on the audit value (exact match,optional)		'value'
+    - limit			maximum number of audit entries retrieved (optional)		'limit'
+    - Additional Query params	other possible query parameters (optional)			from/to time, from/to id, user
+
+    (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
+
+    The columns to display are also configurable (show/hide).
 
  * Search box
  
@@ -93,6 +106,13 @@ the dashlet into one of the columns from the list of dashlets.
 
 Changelog
 ---------
+0.4:
+    - datatable columns can now be configured to be shown or hidden
+    - an extra field has been added to the config dialog to pass additional server side query parameters.
+	See the wiki documentation (http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query) and the web script description.
+    - datatable css fix for google chrome, and various css tweaks
+    - Added help link opposite the config link
+
 0.31:
     - build.properties more consistent with other projects
     - distributed jar had a wrong french bundle filename
@@ -122,4 +142,3 @@ Changelog
 0.2 : search box / query filtering 
 
 0.1 : inital release
-

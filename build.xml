@@ -92,11 +92,11 @@
    
    <!-- Create required prerequisite directory structure -->
    <target name="prepare" description="Create initial build structures">
-       <mkdir dir="${build.dir}" />
+      <mkdir dir="${build.dir}" />
       <mkdir dir="${dist.dir}" />
    </target>
    
-    <!--
+   <!--
         Assemble the configuration and resource files in a JAR file structure. This mechanism 
         was introduced in Alfresco 3.3 and allows Share extensions containing web scripts, Surf 
         configuration and static assets to be added to the servlet container as shared libraries.
@@ -106,8 +106,8 @@
         
         This target excludes the files custom-slingshot-application-context.xml, share-config-custom.xml
         and similar files as only one of these should be present on the classpath.
-    -->
-    <target name="build-jar" description="Assemble configuration and resource files in a JAR file structure">
+   -->
+   <target name="build-jar" description="Assemble configuration and resource files in a JAR file structure">
         <mkdir dir="${build.jar.dir}" />
         <copy todir="${build.jar.dir}" includeEmptyDirs="false">
             <fileset dir="${config.dir}" includes="${config.includes}" excludes="${config.excludes}" >
@@ -124,28 +124,48 @@
         <yuicompress fromdir="${res.dir}" todir="${build.jar.dir}/META-INF" excludes="**/*-min.js" warn="yuicompress.warn">
             <include name="**/*.js" />
         </yuicompress>
-    </target>
-   
-   <!-- Build the JAR file -->
-    <target name="dist-jar" depends="clean, prepare, build-jar" 
-      description="Build a JAR file containing configuration and resource files">
-      <jar destfile="${dist.dir}/${jar.name}">
-         <fileset dir="${build.jar.dir}" />
-      </jar>
+
+        <jar destfile="${dist.dir}/${jar.name}">
+            <fileset dir="${build.jar.dir}" />
+        </jar>
    </target>
-   
+
+   <!-- Distribute the JAR file -->
+   <target name="dist-jar" depends="clean, prepare, copy-en-l10n-bundles, build-jar, write-sha1sums"
+           description="Distribute the JAR file">
+   </target>
+
+   <target name="copy-en-l10n-bundles" description="Copy the default l10n bundles to the _en locale suffix">
+         <delete>
+            <fileset dir="${config.dir}/alfresco/site-webscripts">
+               <include name="**/*_en.properties" />
+            </fileset>
+        </delete>
+        <copy todir="${config.dir}/alfresco/site-webscripts/org/alfresco/components/dashlets">
+            <fileset dir="${config.dir}/alfresco/site-webscripts/org/alfresco/components/dashlets"/>
+            <mapper type="regexp"
+                 from="^([^_]*).properties$"
+                 to="\1_en.properties"/>
+        </copy>
+        <copy todir="${config.dir}/alfresco/site-webscripts/org/alfresco/modules/dashlets">
+            <fileset dir="${config.dir}/alfresco/site-webscripts/org/alfresco/modules/dashlets"/>
+            <mapper type="regexp"
+                 from="^([^_]*).properties$"
+                 to="\1_en.properties"/>
+        </copy>
+   </target>
+
    <target name="write-sha1sums">
-	<delete file="${dist.dir}/SHA1SUM" quiet="true"/>
-	<tstamp>
+	 <delete file="${dist.dir}/SHA1SUM" quiet="true"/>
+	 <tstamp>
 	    <format property="current.time" pattern="MM/dd/yyyy hh:mm aa"/>
-	</tstamp>
+	 </tstamp>
 	
-	<checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
-	<!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum, ...) -->
+	 <checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
+	 <!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum, ...) -->
 	
-	<echo message="# Generated on ${current.time} ${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
-	<echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
-	
+	 <echo message="# Generated on ${current.time} ${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
+	 <echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
     </target>
     
     <!--

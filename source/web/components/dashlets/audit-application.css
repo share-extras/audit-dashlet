@@ -4,14 +4,14 @@
    margin-bottom: 10px;
 }
 
-.audit-application-dashlet .entries,
+.audit-application-dashlet .entries
 {
    margin-top: 10px;
    margin-bottom: 10px;
    height: 90%;
 }
 
-.audit-application-dashlet .body,
+.audit-application-dashlet .body
 {
    margin-top: 10px;
    margin-bottom: 10px;
@@ -21,17 +21,47 @@
 {
     width: 97%;
     border-collapse: collapse;
-    border: 1px solid #CBCBCB;
+    border: 1px solid #cbcbcb;
+    margin-left: 5px;
+
     /* google chrome : wrapping long, non-spaced, blocks of text */
     word-break: break-all;
+    /* firefox : wrapping long, non-spaced, blocks of text */
+    word-wrap: break-word;
 }
 
-.dashlet .customScrollableList
+.audit-application-dashlet .custom-scrollable-list
 {
    padding: 0;
    overflow: auto;
    position: relative;
 }
+
+.audit-application-dashlet thead .yui-dt-label
+{
+    padding-right: 5px;
+}
+
+.audit-application-dashlet .yui-pg-container
+{
+    padding-left: 10px;
+}
+
+.spaced-left
+{
+   padding-left: 10px;
+}
+
+.spaced-more-left
+{
+   padding-left: 30px;
+}
+
+.spaced-right
+{
+   padding-right: 10px;
+}
+
 
 .audit-application-dashlet .refresh
 {

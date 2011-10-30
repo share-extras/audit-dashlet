@@ -11,7 +11,9 @@
 	    "values":
 	    {
 		<#list e.values?keys as key>
-		    "${key?replace('.*/', '', 'r')}":"${e.values[key]}"
+		    <#-- keep only the audit key for readability -->
+		    <#-- and remove spurious/invalid linebreaks (see ALF-11190) -->
+		    "${key?replace('.*/', '', 'r')}":"${e.values[key]?replace('(\n|\r\n|\r)',' ','r')}"
 		    <#if key_has_next>,</#if>
 		</#list>
 	    }
