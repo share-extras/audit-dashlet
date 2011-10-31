@@ -131,8 +131,8 @@
             * Whether or not to show the ID column
             *
             * @property show_id_column
-            * @type boolean
-            * @default true
+            * @type string
+            * @default ""
             */
             show_id_column: "",
 
@@ -140,8 +140,8 @@
             * Whether or not to show the user column
             *
             * @property show_user_column
-            * @type boolean
-            * @default true
+            * @type string
+            * @default ""
             */
             show_user_column: "",
 
@@ -149,8 +149,8 @@
             * Whether or not to show the time column
             *
             * @property show_time_column
-            * @type boolean
-            * @default true
+            * @type string
+            * @default ""
             */
             show_time_column: "",
 
@@ -158,8 +158,8 @@
             * Whether or not to show the values column
             *
             * @property show_values_column
-            * @type boolean
-            * @default true
+            * @type string
+            * @default ""
             */
             show_values_column: ""
 
@@ -663,8 +663,8 @@
 			dir:"desc"
 		    }
 	    };
-	    
-	    var myDataTable = new YAHOO.widget.DataTable(this.entriesContainer,myColumnDefs, myDataSource, dtOptions);
+
+	    var myDataTable = new YAHOO.widget.DataTable(this.entriesContainer, myColumnDefs, myDataSource, dtOptions);
 	    // can be used to interact with the results. kept as a reference here. 
 	    myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload)
 	    {
