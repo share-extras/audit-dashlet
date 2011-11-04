@@ -1,8 +1,8 @@
 function main()
 {
-      
+
     // get the live list from the repo of currently registered audit applications
-    // requires to be logged in as an admin user 
+    // requires to be logged in as an admin user
     var uri = "/api/audit/control";
     var connector = remote.connect("alfresco");
     var result = connector.get(uri);

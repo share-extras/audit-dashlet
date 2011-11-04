@@ -1,7 +1,7 @@
 {
-   "count": "${auditresponse.count}",
-   "entries": 
-   [
+    "count": "${auditresponse.count}",
+    "entries":
+    [
     <#list auditresponse.entries as e>
 	{
 	    "id": "${e.id}",
@@ -19,7 +19,5 @@
 	    }
 	}<#if e_has_next>,</#if>
     </#list>
-   ]
+    ]
 }
-
-                        

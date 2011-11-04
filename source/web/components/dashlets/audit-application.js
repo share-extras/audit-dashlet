@@ -28,35 +28,35 @@
  */
 (function()
 {
-   /**
+    /**
     * YUI Library aliases
     */
-   var Dom = YAHOO.util.Dom,
+    var Dom = YAHOO.util.Dom,
       Event = YAHOO.util.Event;
 
-   /**
+    /**
     * Alfresco Slingshot aliases
     */
-   var $html = Alfresco.util.encodeHTML,
+    var $html = Alfresco.util.encodeHTML,
       $combine = Alfresco.util.combinePaths;
 
-   /**
+    /**
     * Dashboard AuditApplication constructor.
-    * 
+    *
     * @param {String} htmlId The HTML id of the parent element
     * @return {Alfresco.dashlet.AuditApplication} The new component instance
     * @constructor
     */
-   Alfresco.dashlet.AuditApplication = function AuditApplication_constructor(htmlId)
-   {
+    Alfresco.dashlet.AuditApplication = function AuditApplication_constructor(htmlId)
+    {
       return Alfresco.dashlet.AuditApplication.superclass.constructor.call(this, "Alfresco.dashlet.AuditApplication", htmlId, ["datatable", "datasource", "paginator", "autocomplete"]);
    };
 
-   /**
+    /**
     * Extend from Alfresco.component.Base and add class implementation
     */
-   YAHOO.extend(Alfresco.dashlet.AuditApplication, Alfresco.component.Base,
-   {
+    YAHOO.extend(Alfresco.dashlet.AuditApplication, Alfresco.component.Base,
+    {
 	/**
 	* Object container for initialization options
 	*
@@ -118,50 +118,50 @@
 	    */
 	    rowsPerPage: "",
 
-            /**
-            * Additional audit API server side query params
-            *
-            * @property additionalQueryParams
-            * @type string
-            * @default ""
-            */
-            additionalQueryParams: "",
+	    /**
+	    * Additional audit API server side query params
+	    *
+	    * @property additionalQueryParams
+	    * @type string
+	    * @default ""
+	    */
+	    additionalQueryParams: "",
 
-            /**
-            * Whether or not to show the ID column
-            *
-            * @property show_id_column
-            * @type string
-            * @default ""
-            */
-            show_id_column: "",
+	    /**
+	    * Whether or not to show the ID column
+	    *
+	    * @property show_id_column
+	    * @type string
+	    * @default ""
+	    */
+	    show_id_column: "",
 
-            /**
-            * Whether or not to show the user column
-            *
-            * @property show_user_column
-            * @type string
-            * @default ""
-            */
-            show_user_column: "",
+	    /**
+	    * Whether or not to show the user column
+	    *
+	    * @property show_user_column
+	    * @type string
+	    * @default ""
+	    */
+	    show_user_column: "",
 
-            /**
-            * Whether or not to show the time column
-            *
-            * @property show_time_column
-            * @type string
-            * @default ""
-            */
-            show_time_column: "",
+	    /**
+	    * Whether or not to show the time column
+	    *
+	    * @property show_time_column
+	    * @type string
+	    * @default ""
+	    */
+	    show_time_column: "",
 
-            /**
-            * Whether or not to show the values column
-            *
-            * @property show_values_column
-            * @type string
-            * @default ""
-            */
-            show_values_column: ""
+	    /**
+	    * Whether or not to show the values column
+	    *
+	    * @property show_values_column
+	    * @type string
+	    * @default ""
+	    */
+	    show_values_column: ""
 
 	},
 
@@ -674,21 +674,21 @@
 	    this.entriesDataSource = myDataSource;
 	    this.dataTable = myDataTable;
 
-            // column display/hide
-            this.showOrHideColumn(0,this.options.show_id_column);
-            this.showOrHideColumn(1,this.options.show_user_column);
-            this.showOrHideColumn(2,this.options.show_time_column);
-            this.showOrHideColumn(3,this.options.show_values_column);
+	    // column display/hide
+	    this.showOrHideColumn(0,this.options.show_id_column);
+	    this.showOrHideColumn(1,this.options.show_user_column);
+	    this.showOrHideColumn(2,this.options.show_time_column);
+	    this.showOrHideColumn(3,this.options.show_values_column);
 
 	},
 
 	showOrHideColumn : function  AuditApplication_showOrHideColumn(column_number,show)
-        {
-            if(show == "show")
-               this.dataTable.showColumn(column_number);
-            else
-                this.dataTable.hideColumn(column_number);
-        },
+	{
+	    if(show == "show")
+	       this.dataTable.showColumn(column_number);
+	    else
+		this.dataTable.hideColumn(column_number);
+	},
 
 	// This is the searchbox filter function 
 	// the complete results will be filtered out according to the query before being returned for display 
@@ -934,7 +934,7 @@
 	{
 	    if (e)
 		Event.preventDefault(e); // Stop browser's default click behaviour for the link
-	    
+
 	    this.lastButtonRefreshEventTimeStamp = new Date().getTime();
 	    var that = this; // "that" is the new "this" :), i.e access the dashlet object (current this) inside setTimeout
 	    setTimeout(function() 
@@ -1147,4 +1147,6 @@
 		this.configDialog.show();
 	}
     });
-})();
+    }
+)
+();
