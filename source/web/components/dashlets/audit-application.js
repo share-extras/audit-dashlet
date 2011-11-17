@@ -18,7 +18,7 @@
  * You should have received a copy of the Apache 2.0 license along with
  * this project. If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
- 
+
 /**
  * Dashboard Audit entries viewing component
  *
@@ -108,7 +108,7 @@
 	    * @default 10
 	    */
 	    defaultRowsPerPage: 10,
-	    
+
 	    /**
 	    * Number of entries to display per page
 	    *
@@ -276,7 +276,7 @@
 
 	    // push utility prototypes to String
 	    this.addUtilPrototypes();
- 
+
 	    // Set the title according to selected options (args)
 	    if (this.options.application != "")
 	    {
@@ -287,7 +287,7 @@
 		var limitHeader = validLimit ? " ("+ this.options.limit + " max)" : "";
 
 		this.titleContainer.innerHTML = this.msg("audit.dashlet.header.default")+ " : " + appHeader + vfHeader + limitHeader;
-		
+
 		// an application name has been configured, display the search box
 		Dom.removeClass(this.searchBoxContainer,'shy');
 		Dom.removeClass(this.searchBoxLabelContainer,'shy');
@@ -296,13 +296,13 @@
 	    else
 	    {
 		this.titleContainer.innerHTML = this.msg("audit.dashlet.header.default");
-		
+
 		// don't display the search box if no application name has been configured
 		Dom.addClass(this.searchBoxContainer,'shy');
 		Dom.addClass(this.searchBoxLabelContainer,'shy');
 	    }
 
-		
+
 	    // Load the data
 	    if (this.dataTable)
 	    {
@@ -318,7 +318,7 @@
 	    else
 		this.setMessage(this.msg("audit.dashlet.notConfigured"));
 	},
-      
+
       /**
        * Set a message text to display to the user
        * 
@@ -338,7 +338,7 @@
 		Dom.setStyle(this.messageContainer, "display", "none");
 	    }
 	},
-	
+
 	/**
 	 * Add utility prototypes to String, so that they can be used easily throughout 
 	 * @method addUtilPrototypes
@@ -369,14 +369,14 @@
 		    return "\\"+$0;
 		});
 	    };
-	    
+
 	    // marker block elision : eliminate nested markers, that are already enclosed in a larger mark block
 	    // e.g : <Space<s<S>>tore> => <SpacesStore>, etc...
 	    String.prototype.elideHighlightMarkers = function(open_marker_char, close_marker_char)
 	    {
 		var opened=false; var skip_next_close_stack=[];
 		var rebuild=""; var c ='';
-				
+
 		for(var j=0; j< this.length; j++)
 		{
 		    c = this.charAt(j);
@@ -392,11 +392,11 @@
 		    }
 		    else rebuild+=c;
 		}
-		
+
 		return rebuild;
 	    };
 	},
-	
+
 	/**
 	* Load entries and render in the dashlet
 	* 
@@ -425,7 +425,7 @@
 					    var template = Alfresco.constants.URI_TEMPLATES["userprofilepage"];
 					    var HTMLed_username=(oData+"").swapHighlightMarkers();
 					    var unmarked_username=(oData+"").trimHighlightMarkers();
-					    
+
 					    // don't display the link if username is null (could be an audited failed login), if the template could not be found
 					    // or in portlet mode
 					    if( ! (YAHOO.lang.isUndefined(template) || template.length === 0 || Alfresco.constants.PORTLET || unmarked_username == "null"))
@@ -455,62 +455,59 @@
 				// the formatter is used to make the raw data a little more user friendly, i.e : 
 				// 	- if a noderef pattern is detected, include a doclib link to the doc details page
 				//  - add html <li> elements around each value, and separate key/value with spacing for readability
-				
+
 				formatter:function(elCell, oRecord, oColumn, oData) 
 				    {
 					    var arrayAsString="";
-					    
+
 					    // noderef_regex      matches :protocol://storeId/uuid
 					    // marked_noderef_regex matches :protocol://storeId/relaxed-uuid (any number of chars in each dash-separated group, floating html)
-					    
+
 					    // unicode codepoints \uFFFE and \uFFFF are used for submatches opening and closing markers. 
 					    // Note for html : also matches \uFFFE and \uFFFF that may be interspersed with the noderef
 					    // 	the marked noderef elements are relaxed/not fixed in size, as the number of opening and closing markers may vary 
 					    // 	the noderef_regex will enforce the pattern against the unmarked string
-					    
+
 					    var noderef_regex        = /[\w]+:\/\/\w+\/[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}/g;
 					    var marked_noderef_regex = /[\w\uFFFE\uFFFF]+:[\uFFFE\uFFFF]?([\uFFFE\uFFFF]?\/[\uFFFE\uFFFF]?){2}[\w\uFFFE\uFFFF]+\/[\w\uFFFE\uFFFF]+-[\w\uFFFE\uFFFF]+-[\w\uFFFE\uFFFF]+-[\w\uFFFE\uFFFF]+-[\w\uFFFE\uFFFF]+/g;
-					
+
 					    var valuesArray = oData.split("\n");
 					    var multivalued = (valuesArray.length > 1) ; // multivalued = multiple lines for this particular row field
-					    
+
 					    for(pair_number in valuesArray)
 					    {
 						var raw_value=valuesArray[pair_number];
 						var audit_key=raw_value.split(":",1);
-						
+
 						var audit_value=raw_value.split(/^[^:]*:/).pop();
 						var unmarked_audit_value=audit_value.trimHighlightMarkers();
-							    
+
 						var displayed_value=audit_value;
-						
+
 						var matches=audit_value.match(marked_noderef_regex);
 						var unmarked_matches=unmarked_audit_value.match(noderef_regex);
-						
-						// webkit seems to have issues with wrapping long links, add a pre-span space if the detected browser is webkit based
-						var prepended_space = YAHOO.env.ua.webkit > 0 ? " " : "";
 
 						if(unmarked_matches && matches)
 						{
 						    var link_start="<a href='"+Alfresco.constants.URL_PAGECONTEXT+"document-details?nodeRef=";
 						    var link_class="' class='theme-color-1'>";
 						    var link_end="</a><br/>";
-					
+
 						    // iterate and replace. just in case the 2 arrays don't have the same length (unlikely), iterate over 
 						    // the least long array to avoid out-of-bounds reads
 						    for (var match_index = 0; match_index < Math.min(matches.length,unmarked_matches.length); match_index++)
 						    {
 							    var linked=link_start+$html(unmarked_matches[match_index])+link_class
-									    +matches[match_index].swapHighlightMarkers(prepended_space)
+									    +matches[match_index].swapHighlightMarkers()
 									    +link_end;
-							    	    
+
 							    // switch out the plain noderef for a doc details link on that same noderef
 							    displayed_value=displayed_value.replace(matches[match_index],linked);
 						    }
 						}
 						// swap out the remaining markers, not part of a link
-						displayed_value=displayed_value.swapHighlightMarkers(prepended_space);
-						
+						displayed_value=displayed_value.swapHighlightMarkers();
+
 						arrayAsString+="<li>"+ (multivalued ?"[ ":"") + (audit_key+"").swapHighlightMarkers()
 								     + " : " + displayed_value + (multivalued ?" ] ":"") + "</li>";
 					    }
@@ -522,24 +519,24 @@
 
 	    var auditValueFilterquery = this.options.valueFilter ? "&valueFilter="+encodeURI(this.options.valueFilter) : "";
 	    var limitquery            = this.options.limit ? "&limit="+encodeURI(this.options.limit) : "";
-	    
+
 	    // add in any optional server side query param. since they will be separated by a '&', encode it with an unassignable
 	    // unicode code point. it will be decoded by the data webscript that will perform the actual audit API query call.
 	    var additionalQueryParams = this.options.additionalQueryParams ?
 		    "&additionalQueryParams="+encodeURI(this.options.additionalQueryParams.replace(/&/g,'\uFFFF')) : "";
-	    
+
 	    // build out the URL to the datasource using our own parameters
 	    // the call to the "Audit Application Data Component" webscript will handle the actual audit query call to the repo. 
 	    // Its repsonse will, as a 1st step, filter out the audit application path to keep the key only for dashlet readability
 	    var dataSourceURI=Alfresco.constants.URL_SERVICECONTEXT 
 			+  "components/dashlets/audit-application/entries?application=" 
 			+ encodeURI(this.options.application) + auditValueFilterquery + limitquery + additionalQueryParams;
-		
+
 	    var myDataSource = new YAHOO.util.DataSource(dataSourceURI);
-		
+
 	    myDataSource.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 	    myDataSource.connXhrMode  =  "queueRequests"; // If a request is already in progress, wait until response is returned before sending the next request.
-	    
+
 	    // the response schema defines how and what to parse from the query response
 	    myDataSource.responseSchema = 
 	    {
@@ -559,7 +556,7 @@
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').replace(/\.\d\d\d/ig,"").replace(/\+.*/ig,"");
 						else if ( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').split('.')[0];
-						
+
 						var date = new Date(oData);
 						if( (date != "Invalid Date") && !isNaN(date))
 						    return date;
@@ -573,7 +570,7 @@
 						// custom parser to get multiple audit key/values pairs as key:pair strings separated by newlines 
 						// easier to handle and format later on
 						var arrayAsString="";
-						
+
 						var keycount = 0, i=0;
 						for(prop in oData) keycount++; //oData not an array, can't rely on length for the properties
 						var multivalued = (keycount > 1) ;// audit entry is multivalued (ie has multiple lines)
@@ -588,21 +585,21 @@
 						return arrayAsString;
 					    } 
 		    }
-		    
+
 		],
 		metaFields: 
 		{
 		    totalRecords : "count"
 		}
 	    };
-	    
+
 	    var dashlet = this; // needed to use the dashlet object easily inside doBeforeCallBack
-	
+
 	    // used to filter out entries prior to callback. the actual filtering is done in applyRegexFilterOnResponse
 	    myDataSource.doBeforeCallback = function (req,raw,res,cb)
 	    {
 		var currentCount = res.results.length;
-		
+
 		if(req)
 		{
 		    var filterOutput = dashlet.applyRegexFilterOnResponse(req,res);
@@ -613,7 +610,7 @@
 			//switch the search background to valid. no need to test with hasClass, YUI dom already does this internally
 			Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
 			Dom.addClass(dashlet.searchBoxContainer,'valid-regex');
-			
+
 			// update the message containing the number of new (now filtered out) results
 			var filteredCount = filterOutput.filtered.length;
 			dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.filteredResults", filteredCount, currentCount - filteredCount) +" :";
@@ -623,7 +620,7 @@
 			//switch the search background to invalid
 			Dom.removeClass(dashlet.searchBoxContainer,'valid-regex');
 			Dom.addClass(dashlet.searchBoxContainer,'invalid-regex');
-			
+
 			dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.invalidSearch") +" :";
 		    }
 		}
@@ -632,14 +629,14 @@
 		    //we're back to an empty filter. remove the invalid-regex styling, if present 
 		    Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
 		    Dom.removeClass(dashlet.searchBoxContainer,'valid-regex');
-		    
+
 		    dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.searchWithinResults", currentCount) +" :";
 		}
 
-		
+
 		return res;
 	    }
-	    
+
 	    // various datatable options
 	    var dtOptions = 
 	    {
@@ -698,7 +695,7 @@
 		var input    = res.results || []; 
 		var filtered = []; 
 		var i,l=input.length; 
-		
+
 		// Array.indexOf requires Javascript 1.6. not all supported browsers support this at present, so wrap it
 		function indexOfWrapper(array,string_to_match)
 		{
@@ -715,12 +712,12 @@
 			return -1;
 		    }
 		}
-		
+
 		if (req) 
 		{ 
 			//remove inserted searchWithinResults query param
 			var querystring=req.replace("&searchWithinResults=","");
-			
+
 			// inclusion is the default, if is start with a + strip it.
 			// no real need to escape since user can use the field to "really" search for a +, eg: field:+
 			var negation_predicate_present=false;
@@ -735,14 +732,14 @@
 
 			var splittedQueryElements = querystring.split(":");
 			var isColonSeparated=splittedQueryElements.length > 1;
-			
+
 			// search style : id:614. if a ":" is present in the query, assume the first part is the field to search on
 			// if none specified, search is performed on the values field
 			// if colon separated get first item and remove it from the array
 			var field=isColonSeparated ? splittedQueryElements.shift() : "values"; 
-			
+
 			var to_match = isColonSeparated ? splittedQueryElements.join(":") : querystring;
-			
+
 			// there is sometimes some spurious spaces just after the field definitions. trim them. 
 			var to_match = to_match.replace(":",":\\s*");
 
@@ -765,7 +762,7 @@
 
 			    return output;
 			}
-			
+
 			for (i = 0 ; i < l; ++i) 
 			{ 
 			    //special case : match date instances to the current display format (see formatter for time column)
@@ -775,13 +772,13 @@
 			    // just in case, trim existing markers coming from the data and replace with a space, although unlikely
 			    // as the markers have been specifically chosen to be non-character codepoints
 			    var field_value = (input[i][field]+"").trimHighlightMarkers(" ");
-			
+
 			    var remainder = field_value; //start with the whole string. trim off as we go along matches
 			    var at_least_one_match = false;
 			    var previous_remaining_match;
 			    var matching_strings = [];
 			    var deferred_matching_strings = [];
-			
+
 			    // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf
 			    // they won't need to be escaped throughout the string
 			    var highlight_open_marker ='\uFFFE';
@@ -790,14 +787,14 @@
 			    while(remaining_match=re_to_match.exec(remainder)) // null if no match
 			    {
 				at_least_one_match=true;
-			
+
 				// matching strings is used to keep track of what strings we have already highlighted in the
 				// current row. indexOf needs Javascript 1.6, so use a wrapper to ensure support
 				var alreadyHighlighted = (indexOfWrapper(matching_strings,remaining_match[0]) != -1);
 
 				//if (   (re_to_match.exec(remainder) && !negation_predicate_present ) 
 				//  ||   (!re_to_match.exec(remainder) && negation_predicate_present ) )
-			
+
 				// simulated XOR, equivalent to above. 
 				// no match regex will be a null
 				// negated each element is necesary to force non-booleans (e.g null) into a boolean
@@ -833,7 +830,7 @@
 					    }
 					}
 				}
-				
+
 				//trim to keep the rest of the string after the current match index
 				// break out of the loop if there is no remainder, or the remainder has not changed 
 				// likely $ or ^ only, respectively , in that case
@@ -860,11 +857,11 @@
 					field_value=field_value.replace(deferred_regex,highlight_open_marker+deferred_matching_strings[deferred_index]+highlight_close_marker);
 				    }
 				}
-				
+
 				// eliminate potential useless successive close open and open close markers
 				field_value=field_value.replace(new RegExp(highlight_close_marker+highlight_open_marker,"g"),"")
 								    .replace(new RegExp(highlight_open_marker+highlight_close_marker,"g"),"");
-				
+
 				// marker block elision : eliminate nested markers, that are already enclosed in a larger mark block
 				// replace the field value with the elided version
 				input[i][field]=field_value.elideHighlightMarkers(highlight_open_marker, highlight_close_marker);
@@ -981,7 +978,7 @@
 		});
 
 	},
-		
+
 	/**
 	* Configuration click handler
 	*
@@ -1013,7 +1010,7 @@
 			    this.options.limit = Dom.get(this.configDialog.id + "-limit").value;
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				this.options.limit = ""; // invalid values (not strictly positive integers ) are dropped
-			
+
 			    this.options.rowsPerPage = Dom.get(this.configDialog.id + "-rowsPerPage").value;
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
 				this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers ) are dropped
@@ -1036,7 +1033,7 @@
 			{
                             Dom.get(this.configDialog.id + "-application").value = this.options.application;
 			    Dom.get(this.configDialog.id + "-valueFilter").value = this.options.valueFilter;
-			    
+
 			    // invalid values (not strictly positive integers ) are dropped
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				Dom.get(this.configDialog.id + "-limit").value = ""; 
@@ -1124,7 +1121,7 @@
 			    // the leading space has been intentionnally added by audit-application-applist.get.json.ftl
 			    if(Dom.get(configDialogId + "-application").value == "") 
 				appAutoComplete.sendQuery(" ");
-			    
+
 			    //Instantiate the other field AutoComplete. not needed for now. kept as a reference
 			    //var otherAC = new YAHOO.widget.AutoComplete(this.configDialog.id + "-other", this.configDialog.id + "-other-select", configDataSource);
 			    //otherAC.useShadow = true;
@@ -1143,7 +1140,7 @@
 			actionUrl: actionUrl
 		    });
 		}
-		
+
 		this.configDialog.show();
 	}
     });
