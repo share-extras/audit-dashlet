@@ -5,7 +5,7 @@
       <form id="${el}-form" action="" method="POST">
          <div class="yui-gd">
             <div class="yui-u first"><label for="${el}-application">${msg("audit.dashlet.config.label.application")} :</label></div>
-            <div class="yui-u">
+            <div class="yui-u" id="${el}-application-div">
                <input type="text" name="application" id="${el}-application" />
                <div id="${el}-application-select"></div>
             </div>
@@ -54,16 +54,16 @@
       <div class="yui-gd">
           <div class="yui-u first"><span>${msg("audit.dashlet.config.label.show_fields")} :</span></div>
           <div class="yui-u">
-                <input type="checkbox" class="spaced-right" id="${el}-checkbox-show_id_column"     name="checkbox-show_id_column"/>
+                <input type="checkbox" id="${el}-checkbox-show_id_column"     name="checkbox-show_id_column"/>
                     <span class="spaced-right">${msg("audit.dashlet.field.label.id")}</span>
 
-                <input type="checkbox" class="spaced-right" id="${el}-checkbox-show_user_column"   name="checkbox-show_user_column"/>
+                <input type="checkbox" id="${el}-checkbox-show_user_column"   name="checkbox-show_user_column"/>
                     <span class="spaced-right">${msg("audit.dashlet.field.label.user")}</span>
 
-                <input type="checkbox" class="spaced-right" id="${el}-checkbox-show_time_column"   name="checkbox-show_time_column"/>
+                <input type="checkbox" id="${el}-checkbox-show_time_column"   name="checkbox-show_time_column"/>
                     <span class="spaced-right">${msg("audit.dashlet.field.label.time")}</span>
 
-                <input type="checkbox" class="spaced-right" id="${el}-checkbox-show_values_column" name="checkbox-values_column"/>
+                <input type="checkbox" id="${el}-checkbox-show_values_column" name="checkbox-values_column"/>
                     </span class="spaced-right">${msg("audit.dashlet.field.label.values")}</span>
            </div>
       </div>

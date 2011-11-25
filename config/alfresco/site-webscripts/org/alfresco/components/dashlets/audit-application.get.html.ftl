@@ -31,19 +31,19 @@
     <div class="refresh"><a id="${el}-refresh" href="#">&nbsp;</a></div>
 
 
-    <div class="toolbar" id="${el}-toolbar">
-	<#if userHasConfigPermission && userIsAdmin>
-	    <span class="yui-button-align">
+    <div class="toolbar yui-toolbar" id="${el}-toolbar">
+	<div class="links spaced-height" id="${el}-links">
+	    <#-- ie7 float bug : the align-right floated element must be declared before the non-floated (left) one ... -->
+	    <span class="spaced-more-left custom-align-right">
+		<a class="theme-color-1" href="${msg("audit.dashlet.link.help.url")}" id="${el}-help-link" target="_blank">${msg("audit.dashlet.link.help")}</a>
+	    </span>
+
+	    <#if userHasConfigPermission && userIsAdmin>
 		<span class="first-child">
 		    <a class="theme-color-1" href="#" id="${el}-configure-link">${msg("audit.dashlet.link.configure")}</a>
 		</span>
-	    </span>
-	</#if>
-	<span class="align-right yui-button-align">
-	    <span class="first-child spaced-more-left">
-		<a class="theme-color-1" href="${msg("audit.dashlet.link.help.url")}" id="${el}-help-link" target="_blank">${msg("audit.dashlet.link.help")}</a>
-	    </span>
-	</span>
+	    </#if>
+	</div>
     </div>
 
     <#-- audit only allows admin to query audit entries. therefore the dashlet is only usable by admin users. -->
@@ -53,7 +53,7 @@
 	    <div class="body" style="height: ${currentHeight}px;" id="${el}-body">
 		<div class="message spaced-left" id="${el}-message"></div>
 
-		<div class="markup spaced-left" id="${el}-searchbox">
+		<div class="spaced-left" id="${el}-searchbox">
 		    <#-- search box to filter audit values from YUI -->
 		    <label id="${el}-searchWithinResultsFilterLabel" for="${el}-searchWithinResultsFilter">${msg("audit.dashlet.searchWithinResults",0)} :</label>
 		    <input type="text" id="${el}-searchWithinResultsFilter">

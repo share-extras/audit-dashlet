@@ -544,16 +544,16 @@
 		fields: 
 		[
 		    { key: "id", parser: "number"},
-		    //{ key: "application" },  // we filter by app so show the app in the header rather than "wasting" a column              
+		    //{ key: "application" },  // we filter by app so show the app in the header rather than "wasting" a column.
 		    { key: "user" },  
 		    { key: "time", parser:function(oData)
 					  {
 						var unparsed=oData;
-						// attempt to "simplify" the date for old/legacy browsers. drop the milliseconds and timezone
-						if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 7) 
-						    oData=oData.replace(/\-/ig, '/').split('.')[0];
-						else if (YAHOO.env.ua.ie >= 7)
-						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').replace(/\.\d\d\d/ig,"").replace(/\+.*/ig,"");
+
+						// attempt to "simplify" the date for old/legacy browsers : drop the milliseconds, and drop the colon in the timezone.
+						if(YAHOO.env.ua.ie > 0)
+						    oData= oData.replace(/\-/ig, '/').replace(/\.\d+\+(\d+):(\d+)/,'+$1$2')
+
 						else if ( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').split('.')[0];
 
@@ -1121,6 +1121,11 @@
 			    // the leading space has been intentionnally added by audit-application-applist.get.json.ftl
 			    if(Dom.get(configDialogId + "-application").value == "") 
 				appAutoComplete.sendQuery(" ");
+
+			    // IE's inability to align the textbox properly, if an autocomplete div is attached ...
+			    if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 8)
+				Dom.addClass(Dom.get(this.configDialog.id + "-application-div"),'ac-app-ie');
+
 
 			    //Instantiate the other field AutoComplete. not needed for now. kept as a reference
 			    //var otherAC = new YAHOO.widget.AutoComplete(this.configDialog.id + "-other", this.configDialog.id + "-other-select", configDataSource);

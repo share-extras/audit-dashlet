@@ -58,18 +58,21 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
     For convenience, the list will pop out when opening the configure dialog with no applications currently configured.
     Could be useful if you don't know what application name to search for.
 
-    The number of data rows (audit events) per page is configurable by the 'Entries per page' parameter.
+    The number of data rows (audit events) displayed per page is configurable by the 'Entries per page' parameter.
 
     Additional server side filters are configurable :
       UI Name          		Description                                              Audit API corresponding parameter
       -----------------------------------------------------------------------------------------------------------
-    - value filter		filter on the audit value (exact match,optional)		'value'
+    - value filter		filter on the audit value (exact match, optional)		'value'
     - limit			maximum number of audit entries retrieved (optional)		'limit' (default 100)
     - Additional Query params	other possible query parameters (optional)			from/to time, from/to id, user
 
     (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
 
     The columns to display are also configurable (show/hide).
+
+    Note : the output in the "audited values" field will depend on the configuration of the current audit application.
+    (ie what data extractors have been configured, if using the access auditor or not, etc ...).
 
  * Search box
  
@@ -97,7 +100,7 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 
     - to search for a colon (:), use the field prefix, eg; field:.+:.+ or values:[^:]+: etc... otherwise the colon will be interpreted
       as a field identifier
-    
+
     - noderefs in the audit values will be detected, and "enhanced" with a link to the docdetails page of that noderef
 
     - multi field search is currently not supported, e.g +id:95 -name:romain. Would have to support ( ) , and/or grouping ,etc ...
@@ -106,6 +109,13 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 
 Changelog
 ---------
+
+0.41:
+    - better IE support
+    - some css cleanup
+    - some UI label changes
+    - updated YUI compressor to 2.4.7
+
 0.4:
     - datatable columns can now be configured to be shown or hidden
     - an extra field has been added to the config dialog to pass additional server side query parameters.
