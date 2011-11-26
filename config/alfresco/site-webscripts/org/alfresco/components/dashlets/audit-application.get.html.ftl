@@ -17,10 +17,10 @@
 
     <#-- dashlet resizer does not dynamically adjust the number of rows displayed on the page re: pagination -->
     <#-- the number of rows can be configured in the dialog though, sufficient for now -->
-    <#-- future research : subscribe to rowsPerPageChange, "" etc ...    -->
+    <#-- future research : subscribe to rowsPerPageChange, "" etc...    -->
     new Alfresco.widget.DashletResizer("${el}", "${instance.object.id}").setOptions(
 	{
-	    <#-- IE (as usual) needs apparently a default height, otherwise resizing may not work in some situations --> 
+	    <#-- IE (as usual) needs apparently a default height, otherwise resizing may not work in some situations -->
 	    "minDashletHeight": ${default_height}
 	});
 
@@ -33,7 +33,7 @@
 
     <div class="toolbar yui-toolbar" id="${el}-toolbar">
 	<div class="links spaced-height" id="${el}-links">
-	    <#-- ie7 float bug : the align-right floated element must be declared before the non-floated (left) one ... -->
+	    <#-- ie7 float bug : the align-right floated element must be declared before the non-floated (left) one... -->
 	    <span class="spaced-more-left custom-align-right">
 		<a class="theme-color-1" href="${msg("audit.dashlet.link.help.url")}" id="${el}-help-link" target="_blank">${msg("audit.dashlet.link.help")}</a>
 	    </span>

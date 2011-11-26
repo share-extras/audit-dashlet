@@ -4,7 +4,7 @@ function main()
    var valueFilter = args.valueFilter; 	// optional : "value" filter on the audit entries. match all
    var limit = args.limit;		//  optional : max entry count retrieved by the repo query
 
-   // optional : free field to add in other server-side filters (e.g fromTime, ...)
+   // optional : free field to add in other server-side filters (e.g fromTime... )
    var additionalQueryParams = args.additionalQueryParams;
 
    if (application != null)
@@ -14,13 +14,13 @@ function main()
 	  logger.log("  application:" +application+ " - " + "valueFilter:" +valueFilter);
 
       var maxEntryCount = limit ? "&limit=" + stringUtils.urlEncode(limit) : "";
-      
+
       // decode the '&' param separators from the optional additional params passed in by the dashlet.
       var optionalAdditionalQueryParams = additionalQueryParams ? ("&" + additionalQueryParams.replace(/\uFFFF/g,'&')) : "";
 
       if(logger.isLoggingEnabled())
 	  logger.log("  optionalAdditionalQueryParams: '" +optionalAdditionalQueryParams+ "'");
-      
+
       var sortOrder =  "&forward=" + false; // most recent first
 
       var uri = "/api/audit/query/"+stringUtils.urlEncode(application)+"?verbose=true"
@@ -28,14 +28,14 @@ function main()
 
       var connector = remote.connect("alfresco");
       var result = connector.get(uri);
-      if(logger.isLoggingEnabled()) 
+      if(logger.isLoggingEnabled())
 	  logger.log("called URI:'"+uri+"'");
 
       if (result.status == status.STATUS_OK)
       {
 	 var rawresponse = result.response+""; // cast rawresponse back into a js string
 	 //if(logger.isLoggingEnabled()) logger.log("rawresponse:\n"+rawresponse);
-	 
+
          // the json outputted by the audit template does not quote user and application keys in the ouput
 	 // pending ALF-8307, working around it by adding the quotes with a regex replace
 	 var requoting_regex = /:(\w+)\,/g;
