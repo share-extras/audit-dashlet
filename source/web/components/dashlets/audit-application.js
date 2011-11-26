@@ -284,7 +284,7 @@
 		var vfHeader  = this.options.valueFilter ? " " + this.msg("audit.dashlet.valuefilteredOn") + " " + this.options.valueFilter : "";
 		// valid limit parameter values : strictly positive integers. other values are ignored
 		var validLimit = this.options.limit != "" && !isNaN(this.options.limit) && !((this.options.limit * 1) < 1 );
-		var limitHeader = validLimit ? " ("+ this.options.limit.replace(/0+/,'') + " max)" : ""; // remove leading zeros, if any
+		var limitHeader = validLimit ? " ("+ this.options.limit.replace(/^0+/,'') + " max)" : ""; // trim leading zeros, if any
 
 		this.titleContainer.innerHTML = this.msg("audit.dashlet.header.default")+ " : " + appHeader + vfHeader + limitHeader;
 
@@ -600,37 +600,50 @@
 	    {
 		var currentCount = res.results.length;
 
-		if(req)
+		if(currentCount > 0)
 		{
-		    var filterOutput = dashlet.applyRegexFilterOnResponse(req,res);
-		    res.results = filterOutput.filtered;
-
-		    if(filterOutput.regexStatus == "valid")
+		    // show the search box if it was hidden
+		    Dom.removeClass(dashlet.searchBoxContainer,'shy');
+		    Dom.removeClass(dashlet.searchBoxLabelContainer,'shy');
+			
+		    if(req)
 		    {
-			//switch the search background to valid. no need to test with hasClass, YUI dom already does this internally
-			Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
-			Dom.addClass(dashlet.searchBoxContainer,'valid-regex');
+			var filterOutput = dashlet.applyRegexFilterOnResponse(req,res);
+			res.results = filterOutput.filtered;
 
-			// update the message containing the number of new (now filtered out) results
-			var filteredCount = filterOutput.filtered.length;
-			dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.filteredResults", filteredCount, currentCount - filteredCount) +" :";
+			if(filterOutput.regexStatus == "valid")
+			{
+			    //switch the search background to valid. no need to test with hasClass, YUI dom already does this internally
+			    Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
+			    Dom.addClass(dashlet.searchBoxContainer,'valid-regex');
+
+			    // update the message containing the number of new (now filtered out) results
+			    var filteredCount = filterOutput.filtered.length;
+			    dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.filteredResults", filteredCount, currentCount - filteredCount) +" :";
+			}
+			else if(filterOutput.regexStatus == "invalid")
+			{
+			    //switch the search background to invalid
+			    Dom.removeClass(dashlet.searchBoxContainer,'valid-regex');
+			    Dom.addClass(dashlet.searchBoxContainer,'invalid-regex');
+
+			    dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.invalidSearch") +" :";
+			}
 		    }
-		    else if(filterOutput.regexStatus == "invalid")
+		    else
 		    {
-			//switch the search background to invalid
+			//we're back to an empty filter. remove the invalid-regex styling, if present
+			Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
 			Dom.removeClass(dashlet.searchBoxContainer,'valid-regex');
-			Dom.addClass(dashlet.searchBoxContainer,'invalid-regex');
 
-			dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.invalidSearch") +" :";
+			dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.searchWithinResults", currentCount) +" :";
 		    }
 		}
 		else
 		{
-		    //we're back to an empty filter. remove the invalid-regex styling, if present
-		    Dom.removeClass(dashlet.searchBoxContainer,'invalid-regex');
-		    Dom.removeClass(dashlet.searchBoxContainer,'valid-regex');
-
-		    dashlet.searchBoxLabelContainer.innerHTML = dashlet.msg("audit.dashlet.searchWithinResults", currentCount) +" :";
+			// don't show the search box if there are no results from the datasource
+			Dom.addClass(dashlet.searchBoxContainer,'shy');
+			Dom.addClass(dashlet.searchBoxLabelContainer,'shy');
 		}
 
 
@@ -1008,11 +1021,11 @@
 			    this.options.application = Dom.get(this.configDialog.id + "-application").value;
 			    this.options.valueFilter = Dom.get(this.configDialog.id + "-valueFilter").value;
 
-			    this.options.limit = Dom.get(this.configDialog.id + "-limit").value.replace(/0+/,''); // remove leading zeros, if any
+			    this.options.limit = Dom.get(this.configDialog.id + "-limit").value.replace(/^0+/,''); // trim leading zeros, if any
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				this.options.limit = ""; // invalid values (not strictly positive integers ) are dropped
 
-			    this.options.rowsPerPage = Dom.get(this.configDialog.id + "-rowsPerPage").value.replace(/0+/,''); // remove leading zeros, if any
+			    this.options.rowsPerPage = Dom.get(this.configDialog.id + "-rowsPerPage").value.replace(/^0+/,''); // trim leading zeros, if any
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
 				this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers ) are dropped
 
@@ -1039,13 +1052,13 @@
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				Dom.get(this.configDialog.id + "-limit").value = "";
 			    else
-				Dom.get(this.configDialog.id + "-limit").value = this.options.limit.replace(/0+/,''); // remove leading zeros, if any
+				Dom.get(this.configDialog.id + "-limit").value = this.options.limit.replace(/^0+/,''); // trim leading zeros, if any
 
 			    // invalid values (not strictly positive integers ) are dropped
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
 				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.defaultRowsPerPage;
 			    else
-				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.rowsPerPage.replace(/0+/,''); // remove leading zeros, if any
+				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.rowsPerPage.replace(/^0+/,''); // trim leading zeros, if any
 
 			    // additional audit API server side query params
 			    Dom.get(this.configDialog.id + "-additionalQueryParams").value = this.options.additionalQueryParams;
