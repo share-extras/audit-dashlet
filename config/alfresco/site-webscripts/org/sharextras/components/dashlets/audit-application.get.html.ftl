@@ -1,7 +1,7 @@
 <#assign default_height=320>
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
-   new Alfresco.dashlet.AuditApplication("${el}").setOptions(
+   new Extras.dashlet.AuditApplication("${el}").setOptions(
 	{
 	    "componentId": "${instance.object.id}",
 	    "application": "${args.application!''}",
@@ -34,14 +34,17 @@
     <div class="toolbar yui-toolbar" id="${el}-toolbar">
 	<div class="links spaced-height" id="${el}-links">
 	    <#-- ie7 float bug : the align-right floated element must be declared before the non-floated (left) one... -->
-	    <span class="spaced-more-left custom-align-right">
+	    <span class="custom-align-right">
 		<a class="theme-color-1" href="${msg("audit.dashlet.link.help.url")}" id="${el}-help-link" target="_blank">${msg("audit.dashlet.link.help")}</a>
 	    </span>
 
 	    <#if userHasConfigPermission && userIsAdmin>
-		<span class="first-child">
+		<#-- for some reason, ie6 ignores the inherited left padding of the link -- wrap in a specific span if on ie6 -->
+		<!--[if IE 6]>   <span class="spaced-left"> <![endif]-->
+		<span>
 		    <a class="theme-color-1" href="#" id="${el}-configure-link">${msg("audit.dashlet.link.configure")}</a>
 		</span>
+		<!--[if IE 6]>   </span> <![endif]-->
 	    </#if>
 	</div>
     </div>

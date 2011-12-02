@@ -115,6 +115,12 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 Changelog
 ---------
 
+0.42:
+    - switched to share extras namespace
+    - some comments and jsdoc review
+    - aligned rowsPerPage / defaultRowsPerPage data types
+    - merged some build.xml changes from upstream
+
 0.41:
     - better IE support
     - some css cleanup

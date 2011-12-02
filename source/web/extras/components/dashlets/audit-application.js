@@ -20,42 +20,62 @@
  */
 
 /**
+ * Extras root namespace.
+ *
+ * @namespace Extras
+ */
+if (typeof Extras == "undefined" || !Extras)
+{
+   var Extras = {};
+}
+
+/**
+ * Extras dashlet namespace.
+ *
+ * @namespace Extras.dashlet
+ */
+if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
+{
+   Extras.dashlet = {};
+}
+
+/**
  * Dashboard Audit entries viewing component
  *
+ * @class Extras.dashlet.AuditApplication
+ * @namespace Extras.dashlet
  * @author Romain Guinot
- * @namespace Alfresco
- * @class Alfresco.dashlet.AuditApplication
  */
 (function()
 {
     /**
-    * YUI Library aliases
-    */
+     * YUI Library aliases
+     */
     var Dom = YAHOO.util.Dom,
       Event = YAHOO.util.Event;
 
     /**
-    * Alfresco Slingshot aliases
-    */
+     * Alfresco Slingshot aliases
+     */
     var $html = Alfresco.util.encodeHTML,
       $combine = Alfresco.util.combinePaths;
 
     /**
-    * Dashboard AuditApplication constructor.
-    *
-    * @param {String} htmlId The HTML id of the parent element
-    * @return {Alfresco.dashlet.AuditApplication} The new component instance
-    * @constructor
-    */
-    Alfresco.dashlet.AuditApplication = function AuditApplication_constructor(htmlId)
+     * Dashboard AuditApplication constructor.
+     *
+     * @param {String} htmlId    The HTML id of the parent element
+     * @return {Extras.dashlet.AuditApplication} The new component instance
+     * @constructor
+     */
+    Extras.dashlet.AuditApplication = function AuditApplication_constructor(htmlId)
     {
-      return Alfresco.dashlet.AuditApplication.superclass.constructor.call(this, "Alfresco.dashlet.AuditApplication", htmlId, ["datatable", "datasource", "paginator", "autocomplete"]);
+      return Extras.dashlet.AuditApplication.superclass.constructor.call(this, "Extras.dashlet.AuditApplication", htmlId, ["datatable", "datasource", "paginator", "autocomplete"]);
    };
 
     /**
-    * Extend from Alfresco.component.Base and add class implementation
-    */
-    YAHOO.extend(Alfresco.dashlet.AuditApplication, Alfresco.component.Base,
+     * Extend from Alfresco.component.Base and add class implementation
+     */
+    YAHOO.extend(Extras.dashlet.AuditApplication, Alfresco.component.Base,
     {
 	/**
 	* Object container for initialization options
@@ -66,101 +86,101 @@
 	options:
 	{
 	    /**
-	    * The component id.
-	    *
-	    * @property componentId
-	    * @type string
-	    */
+	     * The component id.
+	     *
+	     * @property componentId
+	     * @type string
+	     */
 	    componentId: "",
 
 	    /**
-	    * The application to display entries for
-	    *
-	    * @property application
-	    * @type string
-	    * @default ""
-	    */
+	     * The application to display entries for
+	     *
+	     * @property application
+	     * @type string
+	     * @default ""
+	     */
 	    application: "",
 
 	    /**
-	    * If set only display entries entirely matching the audit value  (not a partial substring match)
-	    *
-	    * @property valueFilter
-	    * @type string
-	    * @default ""
-	    */
+	     * If set only display entries entirely matching the audit value  (not a partial substring match)
+	     *
+	     * @property valueFilter
+	     * @type string
+	     * @default ""
+	     */
 	    valueFilter: "",
 
 	    /**
-	    * If set only display as many matching entries. The audit API limits the results to 100 by default
-	    *
-	    * @property valueFilter
-	    * @type string
-	    * @default ""
-	    */
+	     * If set only display as many matching entries. The audit API limits the results to 100 by default
+	     *
+	     * @property valueFilter
+	     * @type string
+	     * @default ""
+	     */
 	    limit: "",
 
 	    /**
-	    * Number of entries to display per page
-	    *
-	    * @property rowsPerPage
-	    * @type int
-	    * @default 10
-	    */
-	    defaultRowsPerPage: 10,
+	     * Number of entries to display per page
+	     *
+	     * @property rowsPerPage
+	     * @type string
+	     * @default 10
+	     */
+	    defaultRowsPerPage: "10",
 
 	    /**
-	    * Number of entries to display per page
-	    *
-	    * @property rowsPerPage
-	    * @type int
-	    * @default defaultRowsPerPage
-	    */
+	     * Number of entries to display per page
+	     *
+	     * @property rowsPerPage
+	     * @type string
+	     * @default ""
+	     */
 	    rowsPerPage: "",
 
 	    /**
-	    * Additional audit API server side query params
-	    *
-	    * @property additionalQueryParams
-	    * @type string
-	    * @default ""
-	    */
+	     * Additional audit API server side query params
+	     *
+	     * @property additionalQueryParams
+	     * @type string
+	     * @default ""
+	     */
 	    additionalQueryParams: "",
 
 	    /**
-	    * Whether or not to show the ID column
-	    *
-	    * @property show_id_column
-	    * @type string
-	    * @default ""
-	    */
+	     * Whether or not to show the ID column
+	     *
+	     * @property show_id_column
+	     * @type string
+	     * @default ""
+	     */
 	    show_id_column: "",
 
 	    /**
-	    * Whether or not to show the user column
-	    *
-	    * @property show_user_column
-	    * @type string
-	    * @default ""
-	    */
+	     * Whether or not to show the user column
+	     *
+	     * @property show_user_column
+	     * @type string
+	     * @default ""
+	     */
 	    show_user_column: "",
 
 	    /**
-	    * Whether or not to show the time column
-	    *
-	    * @property show_time_column
-	    * @type string
-	    * @default ""
-	    */
+	     * Whether or not to show the time column
+	     *
+	     * @property show_time_column
+	     * @type string
+	     * @default ""
+	     */
 	    show_time_column: "",
 
 	    /**
-	    * Whether or not to show the values column
-	    *
-	    * @property show_values_column
-	    * @type string
-	    * @default ""
-	    */
+	     * Whether or not to show the values column
+	     *
+	     * @property show_values_column
+	     * @type string
+	     * @default ""
+	     */
 	    show_values_column: ""
 
 	},
@@ -185,6 +205,9 @@
 
 	/**
 	* timeout between two refresh between keyup events in the filter search box
+	*
+	* @property consecutiveRefreshMinimumDelay
+	* @type int
 	*/
 	consecutiveRefreshMinimumDelay : 300,
 
@@ -236,11 +259,11 @@
 
 
 
-      /**
-       * Fired by YUI when parent element is available for scripting
-       *
-       * @method onReady
-       */
+        /**
+         * Fired by YUI when parent element is available for scripting
+         *
+         * @method onReady
+         */
 	onReady: function AuditApplication_onReady()
 	{
 	    this.titleContainer = Dom.get(this.id + "-title");
@@ -261,11 +284,11 @@
 	    this.init();
 	},
 
-      /**
-       * Initialise the display of the dashlet
-       *
-       * @method init
-       */
+        /**
+         * Initialise the display of the dashlet
+         *
+         * @method init
+         */
 	init: function AuditApplication_init()
 	{
 	    // reset search box on init
@@ -281,10 +304,10 @@
 	    if (this.options.application != "")
 	    {
 		var appHeader = this.options.application;
-		var vfHeader  = this.options.valueFilter ? " " + this.msg("audit.dashlet.valuefilteredOn") + " " + this.options.valueFilter : "";
+		var vfHeader  = this.options.valueFilter ? " " + this.msg("audit.dashlet.valuefilteredOn", this.options.valueFilter) : "";
 		// valid limit parameter values : strictly positive integers. other values are ignored
 		var validLimit = this.options.limit != "" && !isNaN(this.options.limit) && !((this.options.limit * 1) < 1 );
-		var limitHeader = validLimit ? " ("+ this.options.limit.replace(/^0+/,'') + " max)" : ""; // trim leading zeros, if any
+		var limitHeader = validLimit ? " (" + this.options.limit.replace(/^0+/,'') + " max)" : ""; // trim leading zeros, if any
 
 		this.titleContainer.innerHTML = this.msg("audit.dashlet.header.default")+ " : " + appHeader + vfHeader + limitHeader;
 
@@ -319,12 +342,12 @@
 		this.setMessage(this.msg("audit.dashlet.notConfigured"));
 	},
 
-      /**
-       * Set a message text to display to the user
-       *
-       * @method setMessage
-       * @param msg {string} Message text to set
-       */
+        /**
+         * Set a message text to display to the user
+         *
+         * @method setMessage
+         * @param {String} msgText    Message text to set
+         */
 	setMessage: function AuditApplication_setMessage(msgText)
 	{
 	    if (msgText)
@@ -341,6 +364,7 @@
 
 	/**
 	 * Add utility prototypes to String, so that they can be used easily throughout
+	 *
 	 * @method addUtilPrototypes
 	 */
 	addUtilPrototypes: function AuditApplication_addUtilPrototypes()
@@ -398,10 +422,10 @@
 	},
 
 	/**
-	* Load entries and render in the dashlet
-	*
-	* @method loadData
-	*/
+	 * Load entries and render in the dashlet
+	 *
+	 * @method loadData
+	 */
 	loadData: function AuditApplication_loadData()
 	{
 	    // define how each column will be formatted. see the response schema for how they are parsed
@@ -551,8 +575,8 @@
 						var unparsed=oData;
 
 						// attempt to "simplify" the date for old/legacy browsers : drop the milliseconds, and drop the colon in the timezone.
-						if(YAHOO.env.ua.ie > 0)
-						    oData= oData.replace(/\-/ig, '/').replace(/\.\d+\+(\d+):(\d+)/,'+$1$2')
+						if(YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 9)
+						    oData= oData.replace(/\-/ig, '/').replace(/\.\d+\+(\d+):(\d+)/,'+$1$2');
 
 						else if ( YAHOO.env.ua.gecko > 0 && YAHOO.env.ua.gecko  <= 1.9)
 						    oData=oData.replace(/\-/ig, '/').replace(/T/ig, ' ').split('.')[0];
@@ -605,7 +629,7 @@
 		    // show the search box if it was hidden
 		    Dom.removeClass(dashlet.searchBoxContainer,'shy');
 		    Dom.removeClass(dashlet.searchBoxLabelContainer,'shy');
-			
+
 		    if(req)
 		    {
 			var filterOutput = dashlet.applyRegexFilterOnResponse(req,res);
@@ -655,7 +679,7 @@
 	    {
 		    paginator: new YAHOO.widget.Paginator(
 		    {
-			rowsPerPage : this.options.rowsPerPage == "" ? this.options.defaultRowsPerPage : this.options.rowsPerPage,
+			rowsPerPage : this.options.rowsPerPage == "" ? this.options.defaultRowsPerPage : ((this.options.rowsPerPage + "").replace(/^0+/,'') * 1),
 			firstPageLinkLabel : this.msg("audit.dashlet.firstPageLinkLabel"),
 			previousPageLinkLabel : this.msg("audit.dashlet.previousPageLinkLabel"),
 			nextPageLinkLabel : this.msg("audit.dashlet.nextPageLinkLabel"),
@@ -675,6 +699,7 @@
 	    };
 
 	    var myDataTable = new YAHOO.widget.DataTable(this.entriesContainer, myColumnDefs, myDataSource, dtOptions);
+
 	    // can be used to interact with the results. kept as a reference here.
 	    myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload)
 	    {
@@ -692,6 +717,13 @@
 
 	},
 
+	/**
+	 * Show or hide a column from the DataTable
+	 *
+	 * @method showOrHideColumn
+	 * @param  {int}    column_number    column number (starting from 0)
+	 * @param  {String} show             "show" to indicate the column should be shown (relates to what has been persisted by the config dialog)
+	 */
 	showOrHideColumn : function  AuditApplication_showOrHideColumn(column_number,show)
 	{
 	    if(show == "show")
@@ -700,8 +732,14 @@
 		this.dataTable.hideColumn(column_number);
 	},
 
-	// This is the searchbox filter function
-	// the complete results will be filtered out according to the query before being returned for display
+	/**
+	 * This is the searchbox filter function.
+	 * The complete results will be filtered out according to the query before being returned for display.
+	 *
+	 * @method applyRegexFilterOnResponse
+	 * @param  {object} req    the request
+	 * @param  {object} res    the response
+	 */
 	applyRegexFilterOnResponse : function AuditApplication_applyRegexFilterOnResponse(req,res)
 	{
 		var output = {};
@@ -897,10 +935,10 @@
 	},
 
 	/**
-	* Refresh entries data when the refresh button is manually clicked (and sufficient delay has passed btwn 2 queries)
-	*
-	* @method refresh
-	*/
+	 * Refresh entries data when the refresh button is manually clicked (and sufficient delay has passed btwn 2 queries)
+	 *
+	 * @method refresh
+	 */
 	refresh: function AuditApplication_refresh()
 	{
 	    var oCallback = {
@@ -910,14 +948,14 @@
 		argument: this.dataTable.getState() // data payload that will be returned to the callback function
 	    };
 	    // Sends a request to the DataSource for more data
-	    var txnid = this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "", oCallback);
+	    this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "", oCallback);
 	},
 
 	/**
-	* Refresh entries data when the search box is updated (and sufficient delay has passed btwn 2 queries)
-	*
-	* @method refreshDataTable_SearchWithinResults
-	*/
+	 * Refresh entries data when the search box is updated (and sufficient delay has passed btwn 2 queries)
+	 *
+	 * @method refreshDataTable_SearchWithinResults
+	 */
 	refreshDataTable_SearchWithinResults :  function AuditApplication_refreshDataTable_searchWithinResults()
 	{
 	    // get state for the new request. restate how the sorting order the data comes from straight from the datasource
@@ -927,7 +965,7 @@
 	    // Get filtered data
 	    // If the search box is not empty, we add an internal query param that will not be used by the server,
 	    // but that we will use in doBeforeCallback  to further refine and filter results that do not match the box value
-	    var txnid = this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "",
+	    this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "",
 	    {
 		success : this.dataTable.onDataReturnInitializeTable,
 		failure : this.dataTable.onDataReturnInitializeTable,
@@ -936,17 +974,21 @@
 	    });
 	},
 
-
-	// do not issue successive refresh requests until a minimum delay (consecutiveRefreshMinimumDelay)
-	// has elapsed between to requests
 	lastButtonRefreshEventTimeStamp : null,
+
+	/**
+	 * Do not issue successive refresh requests until a minimum delay (consecutiveRefreshMinimumDelay) has elapsed between two requests
+	 *
+	 * @method onRefresh
+	 * @param {object} e    HTML event
+	 */
 	onRefresh: function AuditApplication_onRefresh(e)
 	{
 	    if (e)
 		Event.preventDefault(e); // Stop browser's default click behaviour for the link
 
 	    this.lastButtonRefreshEventTimeStamp = new Date().getTime();
-	    var that = this; // "that" is the new "this" :), i.e access the dashlet object (current this) inside setTimeout
+	    var that = this; // "that" is the new "this" :), i.e access the dashlet object (current 'this') inside setTimeout
 	    setTimeout(function()
 	    {
 		var currentTime = new Date().getTime();
@@ -955,19 +997,30 @@
 
 	    }, that.consecutiveRefreshMinimumDelay + 100);
 	},
+
+	/**
+	 * Actual refresh call, from the 'manual' refresh button
+	 *
+	 * @method dispatchButtonRefreshRequest
+	 */
 	dispatchButtonRefreshRequest : function()
 	{
 	    this.refresh();
 	},
 
-	// intercept keyup events. to avoid hammering the server, do not actually refresh the datatime until the user
-	// has stopped typing.
-	// this "stop" is manifested by 2 keyup events separated by an interval defined by consecutiveRefreshMinimumDelay
 	lastKeyUpEventTimeStamp : null,
+
+	/**
+	 * Intercept keyup events. to avoid hammering the server, do not actually refresh the datatime until the user has stopped typing.
+	 * This "stop" is manifested by 2 keyup events separated by more than consecutiveRefreshMinimumDelay.
+	 *
+	 * @method onSearchWithinResultsFilterKeyup
+	 * @param {object} e    HTML event
+	 */
 	onSearchWithinResultsFilterKeyup: function AuditApplication_onSearchWithinResultsFilterKeyup(e)
 	{
 	    this.lastKeyUpEventTimeStamp = new Date().getTime();
-	    var that = this; // "that" is the new "this" :), i.e access the dashlet object (current this) inside setTimeout
+	    var that = this; // "that" is the new "this" :), i.e access the dashlet object (current 'this') inside setTimeout
 	    setTimeout(function()
 	    {
 		var currentTime = new Date().getTime();
@@ -976,28 +1029,42 @@
 
 	    }, that.consecutiveRefreshMinimumDelay + 100);
 	},
+
+	/**
+	 * Actual refresh call, from the search box key up events (after more than consecutiveRefreshMinimumDelay) - @see onSearchWithinResultsFilterKeyup
+	 *
+	 * @method dispatchKeyupRefreshRequest
+	 */
 	dispatchKeyupRefreshRequest : function()
 	{
 	    this.refreshDataTable_SearchWithinResults();
 	},
 
+	/**
+	 * Used to 'transfer' checkbox state changes to hidden text fields.
+	 * These hidden fields will be persisted in the dashlet repo xml config, rather than the checkboxes, whose state seem to
+	 * only be persisted if their state is enabled (i.e. not on->off transition persistence).
+	 *
+	 * @method setupBoxListener
+	 * @param {String} field    the dataTable field key on which to setup the listener
+	 */
 	setupBoxListener: function(field)
 	{
 		var configDialog = this.configDialog;
+
 		YAHOO.util.Event.addListener(Dom.get(configDialog.id + "-checkbox-show_"+field+"_column"), 'click',
 		function()
 		{
 		    Dom.get(configDialog.id + "-show_"+field+"_column").value= (this.checked ? "show" : "hide");
 		});
-
 	},
 
 	/**
-	* Configuration click handler
-	*
-	* @method onConfigClick
-	* @param e {object} HTML event
-	*/
+	 * Configuration click handler
+	 *
+	 * @method onConfigClick
+	 * @param {object} e    HTML event
+	 */
 	onConfigClick: function AuditApplication_onConfigClick(e)
 	{
 	    // config url for this dashlet
@@ -1023,11 +1090,11 @@
 
 			    this.options.limit = Dom.get(this.configDialog.id + "-limit").value.replace(/^0+/,''); // trim leading zeros, if any
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
-				this.options.limit = ""; // invalid values (not strictly positive integers ) are dropped
+				this.options.limit = ""; // invalid values (not strictly positive integers) are dropped
 
 			    this.options.rowsPerPage = Dom.get(this.configDialog.id + "-rowsPerPage").value.replace(/^0+/,''); // trim leading zeros, if any
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
-				this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers ) are dropped
+				this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers) are dropped
 
 			    this.options.additionalQueryParams = Dom.get(this.configDialog.id + "-additionalQueryParams").value;
 
@@ -1048,13 +1115,13 @@
                             Dom.get(this.configDialog.id + "-application").value = this.options.application;
 			    Dom.get(this.configDialog.id + "-valueFilter").value = this.options.valueFilter;
 
-			    // invalid values (not strictly positive integers ) are dropped
+			    // invalid values (not strictly positive integers) are dropped
 			    if(isNaN(this.options.limit)  || (this.options.limit * 1) < 1 )
 				Dom.get(this.configDialog.id + "-limit").value = "";
 			    else
 				Dom.get(this.configDialog.id + "-limit").value = this.options.limit.replace(/^0+/,''); // trim leading zeros, if any
 
-			    // invalid values (not strictly positive integers ) are dropped
+			    // invalid values (not strictly positive integers) are dropped
 			    if(isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
 				Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.defaultRowsPerPage;
 			    else
@@ -1151,16 +1218,16 @@
 			scope: this
 		    }
 		});
-		}
-		else
+	    }
+	    else
+	    {
+		this.configDialog.setOptions(
 		{
-		    this.configDialog.setOptions(
-		    {
-			actionUrl: actionUrl
-		    });
-		}
+		    actionUrl: actionUrl
+		});
+	    }
 
-		this.configDialog.show();
+	    this.configDialog.show();
 	}
     });
     }
