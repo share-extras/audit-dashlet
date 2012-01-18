@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-2011 Alfresco Share Extras project
+ * Copyright (C) 2010-2012 Share Extras contributors
  *
  * This file is part of the Alfresco Share Extras project.
  *
