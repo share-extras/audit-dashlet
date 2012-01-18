@@ -115,6 +115,10 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 Changelog
 ---------
 
+0.43:
+    - allow the 'additional' query string to override any other configured options, not just the sort order
+    - switched the copyright header from 'Share Extras project' to 'Share Extras contributors'
+
 0.42:
     - switched to share extras namespace
     - some comments and jsdoc review
