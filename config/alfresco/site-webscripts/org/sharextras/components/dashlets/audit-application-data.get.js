@@ -40,11 +40,11 @@ function main()
          // pending ALF-8307, working around it by adding the quotes with a regex replace
          var requoting_regex = /:([\w-@.]+)\,/g;
          var requoted_response = rawresponse.replace(requoting_regex, ":\"$1\",");
-         //if(logger.isLoggingEnabled()) logger.log("requoted_response:\n"+requoted_response);
+         //if (logger.isLoggingEnabled()) logger.log("requoted_response:\n"+requoted_response);
 
          // replace with a space spurious newlines that could have been stored in a json item, before the feed gets eval'd. see also ALF-11190.
          var escaped_response = requoted_response.replace(/(\n|\r\n|\r)/g, " ");
-         if (logger.isLoggingEnabled()) logger.log("escaped_response:\n"+escaped_response);
+         //if (logger.isLoggingEnabled()) logger.log("escaped_response:\n"+escaped_response);
 
          var auditresponse = eval("(" + escaped_response + ")");
          model.auditresponse = auditresponse;
