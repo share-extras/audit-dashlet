@@ -28,7 +28,7 @@ The dashlet has been developed to install on top of an existing Alfresco 3.4 ins
     To build the JAR file, run the following command from the base project
     directory.
 
-	ant clean dist-jar
+    ant clean dist-jar
 
     The command should build a JAR file named sample-audit-dashlet.jar in the 'dist' directory within your project.
 
@@ -36,7 +36,7 @@ The dashlet has been developed to install on top of an existing Alfresco 3.4 ins
     use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
     property in Ant.
 
-	ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
+    ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
 
     Once you have run this you will need to restart Tomcat so that the classpath resources in the JAR file are picked up.
 
@@ -61,11 +61,11 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
     The number of data rows (audit events) displayed per page is configurable by the 'Entries per page' parameter.
 
     Additional server side filters are configurable :
-      UI Name          		Description                                              Audit API corresponding parameter
-      -----------------------------------------------------------------------------------------------------------
-    - value filter		filter on the audit value (exact match, optional)		'value'
-    - limit			maximum number of audit entries retrieved (optional)		'limit' (default 100)
-    - Additional Query params	other possible query parameters (optional)			from/to time, from/to id, user
+           UI Name                              Description                                  Audit API corresponding parameter
+      ------------------------------------------------------------------------------------------------------------------------------
+    - value filter                  filter on the audit value (exact match, optional)                 'value'
+    - limit                         maximum number of audit entries retrieved (optional)              'limit' (default 100)
+    - Additional Query params       other possible query parameters (optional)                        from/to time, from/to id, user
 
     (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
 
@@ -78,24 +78,24 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 
     The dashlet search box allows more search capabilities than the server side filter, ie :
     - field to search on (regex or not), e.g :
-	id:14
-	id:1.95$
-	name:romain
-	etc...
+        id:14
+        id:1.95$
+        name:romain
+        etc...
 
     - negation, e.g
-	-name:ro
-	-values:pro
+        -name:ro
+        -values:pro
 
     - mutliline matches are enabled, ^ and $ will match beginning of lines for audit values,
       useful since there can be more than one line per audit entry
 
     - query can match anywhere in the field by default. queries can be any valid javascript regular expression.
       examples :
-		 ^romain
-		 values:r.m...$
-		 id:\d\d8
-		 -time:21
+        ^romain
+        values:r.m...$
+        id:\d\d8
+        -time:21
 
       The search box will turn green or red if the regex is valid or invalid, respectively
       query can be restricted to the beginning by using ^romain (standard regex) for example.
