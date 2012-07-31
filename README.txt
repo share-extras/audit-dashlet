@@ -115,6 +115,11 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 Changelog
 ---------
 
+0.44:
+    - expanded workaround against unquoted json feed for application and user json properties. addresses issue 71.
+    - additional newline sanitizing of the server side json feed, in addition to the checks already present in the freemarker output. possibly addresses issue 82.
+    - rationalized indentation to 3 spaces and cleanup the tabs that have built up over time
+
 0.43:
     - allow the 'additional' query string to override any other configured options, not just the sort order
     - switched the copyright header from 'Share Extras project' to 'Share Extras contributors'
