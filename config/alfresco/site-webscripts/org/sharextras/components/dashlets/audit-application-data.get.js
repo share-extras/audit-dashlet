@@ -38,7 +38,7 @@ function main()
 
          // the json outputted by the audit template does not quote user and application keys in the ouput
 	 // pending ALF-8307, working around it by adding the quotes with a regex replace
-	 var requoting_regex = /:(\w+)\,/g;
+	 var requoting_regex = /:([\w-@.]+)\,/g;
 	 var requoted_response = rawresponse.replace(requoting_regex, ":\"$1\",");
 	 //if(logger.isLoggingEnabled()) logger.log("requoted_response:\n"+requoted_response);
 
