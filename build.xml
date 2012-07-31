@@ -190,36 +190,36 @@
    </target>
 
    <target name="copy-en-l10n-bundles" description="Copy the default l10n bundles to the _en locale suffix">
-         <delete>
-            <fileset dir="${config.dir}/alfresco/site-webscripts">
-               <include name="**/*_en.properties" />
-            </fileset>
-        </delete>
-        <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets">
-            <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets"/>
-            <mapper type="regexp"
-                 from="^([^_]*).properties$"
-                 to="\1_en.properties"/>
-        </copy>
-        <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets">
-            <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets"/>
-            <mapper type="regexp"
-                 from="^([^_]*).properties$"
-                 to="\1_en.properties"/>
-        </copy>
+      <delete>
+         <fileset dir="${config.dir}/alfresco/site-webscripts">
+            <include name="**/*_en.properties" />
+         </fileset>
+      </delete>
+      <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets">
+         <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets"/>
+         <mapper type="regexp"
+               from="^([^_]*).properties$"
+               to="\1_en.properties"/>
+      </copy>
+      <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets">
+         <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets"/>
+         <mapper type="regexp"
+               from="^([^_]*).properties$"
+               to="\1_en.properties"/>
+      </copy>
    </target>
 
    <target name="write-sha1sums">
-	 <delete file="${dist.dir}/SHA1SUM" quiet="true"/>
-	 <tstamp>
-	    <format property="current.time" pattern="MM/dd/yyyy hh:mm aa"/>
-	 </tstamp>
+      <delete file="${dist.dir}/SHA1SUM" quiet="true"/>
+      <tstamp>
+         <format property="current.time" pattern="MM/dd/yyyy hh:mm aa"/>
+      </tstamp>
 
-	 <checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
-	 <!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum...) -->
+      <!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum...) -->
+      <checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
 
-	 <echo message="# Generated on ${current.time}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
-	 <echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
+      <echo message="# Generated on ${current.time}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
+      <echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
     </target>
 
     <!--

@@ -30,8 +30,7 @@ function getUserHasConfigPermission(username)
 }
 function main()
 {
-    model.userHasConfigPermission = getUserHasConfigPermission(user.name);
-    model.userIsAdmin = user.isAdmin;
-
+   model.userHasConfigPermission = getUserHasConfigPermission(user.name);
+   model.userIsAdmin = user.isAdmin;
 }
 main();
