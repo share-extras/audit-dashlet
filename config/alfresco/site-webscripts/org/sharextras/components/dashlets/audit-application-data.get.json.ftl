@@ -4,7 +4,7 @@
     [
     <#list auditresponse.entries as e>
 	{
-	    "id": "${e.id}",
+	    "id": ${e.id},
 	    "application": "${e.application}",
 	    "user": "${e.user}",
 	    "time": "${e.time}",
