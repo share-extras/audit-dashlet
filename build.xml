@@ -1,15 +1,14 @@
 <!--
 
-                            ***********************************
-                                 Share Extras build script  
-                            ***********************************
+                            *************************************
+                                    Share Extras build script
+                            *************************************
 
     Author: Will Abson
 
     Provides a set of targets for building extensions to Alfresco Share in ZIP, AMP and JAR archive
     formats. Since Alfresco 3.3, JAR is the recommended package structure for all simple extensions.
-    For more complex extensions that add additional Java libraries, AMP
-    should be used.
+    For more complex extensions that add additional Java libraries, AMP should be used.
 
     The following file structure is required in your project directory
 
@@ -26,11 +25,11 @@
 -->
 <project basedir="." default="dist-jar" name="Share Audit Dashlet">
 
-   <!-- Allow override properties -->
+    <!-- Allow override properties -->
     <property file="build.properties" />
     <property file="${user.home}/build.properties" />
 
-   <!-- Property default values. May be overridden using above files or via command-line args -->
+    <!-- Property default values. May be overridden using above files or via command-line args -->
     <property name="jar.name" value="share-extension.jar" />
     <property name="zip.name" value="share-extension.zip" />
     <property name="amp.name" value="share-extension.amp" />
@@ -61,7 +60,7 @@
     <!-- Paths to local Tomcat instances -->
     <property name="tomcat.repo.home" value="${tomcat.home}" />
     <property name="tomcat.share.home" value="${tomcat.home}" />
-   
+
     <!-- Additional property values. Generally should not be overridden -->
     <property name="config.dir" value="${basedir}/config" />
     <property name="res.dir" value="${basedir}/source/web" />
@@ -74,7 +73,7 @@
     <property name="amp.file.mappings" value="file-mapping.properties" />
 
     <!-- Define optional tasks -->
-   <!--
+    <!--
     <taskdef name="reload"  classname="org.apache.catalina.ant.ReloadTask" />
     <taskdef name="post"    classname="net.sf.antcontrib.net.PostTask" />
     -->
@@ -85,18 +84,18 @@
 
     <!-- Additional classpath and task definitions -->
 
-   <path id="yuicompressor.classpath">
-       <fileset dir="lib">
-             <include name="yuicompressor-2.4.7.jar"/>
-             <include name="yui-compressor-ant-task-0.5.jar"/>
-       </fileset>
-   </path>
+    <path id="yuicompressor.classpath">
+        <fileset dir="lib">
+            <include name="yuicompressor-2.4.7.jar"/>
+            <include name="yui-compressor-ant-task-0.5.jar"/>
+        </fileset>
+    </path>
 
-   <taskdef name="yuicompress" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
-         <classpath>
+    <taskdef name="yuicompress" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+        <classpath>
             <path refid="yuicompressor.classpath" />
-         </classpath>
-   </taskdef>
+        </classpath>
+    </taskdef>
 
     <path id="ml-ant-http.classpath">
         <fileset dir="lib">
@@ -113,17 +112,17 @@
 
     <!-- Main build target definitions -->
 
-   <!-- Clean out the build and distribution directories -->
-   <target name="clean" description="Clean out all build directories">
-      <delete dir="${build.dir}" />
-      <delete dir="${dist.dir}" />
-   </target>
+    <!-- Clean out the build and distribution directories -->
+    <target name="clean" description="Clean out all build directories">
+        <delete dir="${build.dir}" />
+        <delete dir="${dist.dir}" />
+    </target>
 
-   <!-- Create required prerequisite directory structure -->
-   <target name="prepare" description="Create initial build structures">
-      <mkdir dir="${build.dir}" />
-      <mkdir dir="${dist.dir}" />
-   </target>
+    <!-- Create required prerequisite directory structure -->
+    <target name="prepare" description="Create initial build structures">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${dist.dir}" />
+    </target>
 
     <!--
         Assemble the configuration and resource files in a JAR file structure. This mechanism 
@@ -182,44 +181,44 @@
         <jar destfile="${dist.dir}/${jar.name}">
             <fileset dir="${build.jar.dir}" />
         </jar>
-   </target>
+    </target>
 
-   <!-- Distribute the JAR file -->
-   <target name="dist-jar" depends="clean, prepare, copy-en-l10n-bundles, build-jar, write-sha1sums"
-           description="Distribute the JAR file">
-   </target>
+    <!-- Distribute the JAR file -->
+    <target name="dist-jar" depends="clean, prepare, copy-en-l10n-bundles, build-jar, write-sha1sums"
+            description="Distribute the JAR file">
+    </target>
 
-   <target name="copy-en-l10n-bundles" description="Copy the default l10n bundles to the _en locale suffix">
-      <delete>
-         <fileset dir="${config.dir}/alfresco/site-webscripts">
-            <include name="**/*_en.properties" />
-         </fileset>
-      </delete>
-      <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets">
-         <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets"/>
-         <mapper type="regexp"
-               from="^([^_]*).properties$"
-               to="\1_en.properties"/>
-      </copy>
-      <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets">
-         <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets"/>
-         <mapper type="regexp"
-               from="^([^_]*).properties$"
-               to="\1_en.properties"/>
-      </copy>
-   </target>
+    <target name="copy-en-l10n-bundles" description="Copy the default l10n bundles to the _en locale suffix">
+        <delete>
+            <fileset dir="${config.dir}/alfresco/site-webscripts">
+                <include name="**/*_en.properties" />
+            </fileset>
+        </delete>
+        <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets">
+            <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/components/dashlets"/>
+            <mapper type="regexp"
+                    from="^([^_]*).properties$"
+                    to="\1_en.properties"/>
+        </copy>
+        <copy todir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets">
+            <fileset dir="${config.dir}/alfresco/site-webscripts/org/sharextras/modules/dashlets"/>
+                <mapper type="regexp"
+                        from="^([^_]*).properties$"
+                        to="\1_en.properties"/>
+        </copy>
+    </target>
 
-   <target name="write-sha1sums">
-      <delete file="${dist.dir}/SHA1SUM" quiet="true"/>
-      <tstamp>
-         <format property="current.time" pattern="MM/dd/yyyy hh:mm aa"/>
-      </tstamp>
+    <target name="write-sha1sums">
+        <delete file="${dist.dir}/SHA1SUM" quiet="true"/>
+        <tstamp>
+            <format property="current.time" pattern="MM/dd/yyyy hh:mm aa"/>
+        </tstamp>
 
-      <!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum...) -->
-      <checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
+        <!--Note : we use a readbuffersize of 65536 to generate the same checksums as GNU coreutils (sha1sum, md5sum...) -->
+        <checksum file="${dist.dir}/${jar.name}" format="MD5SUM" algorithm="sha1" property="sha1.jar" readbuffersize="65536"/>
 
-      <echo message="# Generated on ${current.time}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
-      <echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
+        <echo message="# Generated on ${current.time}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
+        <echo message="${sha1.jar}  ${jar.name}${line.separator}" file="${dist.dir}/SHA1SUM"  append="true"/>
     </target>
 
     <!--
@@ -246,8 +245,8 @@
         will not copy files such as share-config-custom.xml itself into Tomcat.
     -->
     <target name="build-zip-tomcat" depends="build-zip-prepare,build-zip-config"
-      description="Assemble the configuration and resource files for a Tomcat deployment structure">
-      <!-- Copy web assets -->
+            description="Assemble the configuration and resource files for a Tomcat deployment structure">
+        <!-- Copy web assets -->
         <copy todir="${build.zip.dir}/${build.res.dir}">
             <fileset dir="${res.dir}" includes="${build.res.includes}" excludes="${build.res.excludes}" />
         </copy>
@@ -299,26 +298,26 @@
     -->
     <target name="build-amp" description="Assemble the configuration and resource files in an AMP file structure">
 
-      <!-- Copy properties files -->
+        <!-- Copy properties files -->
         <copy todir="${build.amp.dir}" file="${amp.file.properties}" failonerror="true" />
         <copy todir="${build.amp.dir}" file="${amp.file.mappings}" failonerror="true" />
 
-      <!-- Copy config files -->
+        <!-- Copy config files -->
         <mkdir dir="${build.amp.dir}/config" />
         <copy todir="${build.amp.dir}/config">
             <fileset dir="${config.dir}" includes="${config.includes}" excludes="${config.excludes}" />
         </copy>
 
-      <!-- Copy resource files -->
+        <!-- Copy resource files -->
         <mkdir dir="${build.amp.dir}/web" />
         <copy todir="${build.amp.dir}/web">
             <fileset dir="${res.dir}" includes="${build.res.includes}" excludes="${build.res.excludes}" />
         </copy>
 
-       <!-- Minify JS -->
-       <yuicompress fromdir="${res.dir}" todir="${build.amp.dir}/web" excludes="**/*-min.js" warn="${yuicompress.warn}">
-          <include name="**/*.js" />
-       </yuicompress>
+        <!-- Minify JS -->
+        <yuicompress fromdir="${res.dir}" todir="${build.amp.dir}/web" excludes="**/*-min.js" warn="${yuicompress.warn}">
+            <include name="**/*.js" />
+        </yuicompress>
     </target>
 
     <!-- Build the AMP file -->
@@ -369,7 +368,7 @@
                 <exclude name="**/classes/alfresco/extension/**" />
                 <exclude name="**/classes/alfresco/templates/webscripts/**" />
             </fileset>
-         </copy>
+        </copy>
     </target>
 
     <!--
@@ -392,13 +391,13 @@
     -->
     <target name="reload-webscripts-repo" depends="" description="Reload repository webscripts">
         <http url="${repo.scripts.index}"
-               method="POST"
-               printrequest="false"
-               printrequestheaders="false"
-               printresponse="false"
-               printresponseheaders="false"
-               expected="200"
-               failonunexpected="true">
+                method="POST"
+                printrequest="false"
+                printrequestheaders="false"
+                printresponse="false"
+                printresponseheaders="false"
+                expected="200"
+                failonunexpected="true">
             <credentials username="${repo.admin.username}" password="${repo.admin.password}" />
             <query>
                 <parameter name="reset" value="on" />
@@ -408,13 +407,13 @@
 
     <target name="reload-webscripts-share" depends="" description="Reload Share webscripts">
         <http url="${share.scripts.index}"
-               method="POST"
-               printrequest="false"
-               printrequestheaders="false"
-               printresponse="false"
-               printresponseheaders="false"
-               expected="200"
-               failonunexpected="true">
+                method="POST"
+                printrequest="false"
+                printrequestheaders="false"
+                printresponse="false"
+                printresponseheaders="false"
+                expected="200"
+                failonunexpected="true">
             <credentials username="${repo.admin.username}" password="${repo.admin.password}" />
             <query>
                 <parameter name="reset" value="on" />

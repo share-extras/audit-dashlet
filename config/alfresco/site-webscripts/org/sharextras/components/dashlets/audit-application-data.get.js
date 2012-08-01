@@ -24,7 +24,7 @@ function main()
       var sortOrder =  "&forward=" + false; // most recent first
 
       var uri = "/api/audit/query/"+stringUtils.urlEncode(application)+"?verbose=true"
-        + optionalAdditionalQueryParams + valueFilterQuery + maxEntryCount + sortOrder;
+                  + optionalAdditionalQueryParams + valueFilterQuery + maxEntryCount + sortOrder;
 
       var connector = remote.connect("alfresco");
       var result = connector.get(uri);

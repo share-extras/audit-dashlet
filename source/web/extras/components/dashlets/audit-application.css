@@ -19,15 +19,15 @@
 
 .audit-application-dashlet .yui-dt table
 {
-    width: 97%;
-    border-collapse: collapse;
-    border: 1px solid #cbcbcb;
-    margin-left: 5px;
+   width: 97%;
+   border-collapse: collapse;
+   border: 1px solid #cbcbcb;
+   margin-left: 5px;
 
-    /* google chrome : wrapping long, non-spaced, blocks of text */
-    word-break: break-all;
-    /* firefox : wrapping long, non-spaced, blocks of text */
-    word-wrap: break-word;
+   /* google chrome : wrapping long, non-spaced, blocks of text */
+   word-break: break-all;
+   /* firefox : wrapping long, non-spaced, blocks of text */
+   word-wrap: break-word;
 }
 
 .audit-application-dashlet .custom-scrollable-list
@@ -39,12 +39,12 @@
 
 .audit-application-dashlet thead .yui-dt-label
 {
-    padding-right: 5px;
+   padding-right: 5px;
 }
 
 .audit-application-dashlet .yui-pg-container
 {
-    padding-left: 10px;
+   padding-left: 10px;
 }
 
 .spaced-left
@@ -64,18 +64,18 @@
 
 .custom-align-right
 {
-    float: right;
+   float: right;
 }
 
 .spaced-height
 {
-    padding-top: 5px;
-    padding-bottom: 5px;
+   padding-top: 5px;
+   padding-bottom: 5px;
 }
 
 .ac-app-ie
 {
-    padding-left: 8px !important;
+   padding-left: 8px !important;
 }
 
 .audit-application-dashlet .refresh
@@ -102,22 +102,22 @@
 
 .audit-application-dashlet .shy
 {
-    display: none;
+   display: none;
 }
 
 .audit-application-dashlet .invalid-regex
 {
-    background-color: #ffa6a6;
+   background-color: #ffa6a6;
 }
 
 .audit-application-dashlet .valid-regex
 {
-    background-color: #a6ffa6;
+   background-color: #a6ffa6;
 }
 
 .audit-application-dashlet .regex-highlight
 {
-    font-weight:bold;
-    background-color: #ffffa6;
+   font-weight:bold;
+   background-color: #ffffa6;
 }
 

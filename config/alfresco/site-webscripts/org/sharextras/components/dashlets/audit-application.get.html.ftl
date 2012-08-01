@@ -3,16 +3,16 @@
 <script type="text/javascript">//<![CDATA[
    new Extras.dashlet.AuditApplication("${el}").setOptions(
    {
-       "componentId": "${instance.object.id}",
-       "application": "${args.application!''}",
-       "valueFilter": "${args.valueFilter!''}",
-       "limit": "${args.limit!''}",
-       "rowsPerPage" : "${args.rowsPerPage!'10'}",
-       "additionalQueryParams" : "${args.additionalQueryParams!''}",
-       "show_id_column" : "${args.show_id_column!'show'}",
-       "show_user_column" : "${args.show_user_column!'show'}",
-       "show_time_column" : "${args.show_time_column!'show'}",
-       "show_values_column" : "${args.show_values_column!'show'}"
+      componentId: "${instance.object.id}",
+      application: "${args.application!''}",
+      valueFilter: "${args.valueFilter!''}",
+      limit: "${args.limit!''}",
+      rowsPerPage: "${args.rowsPerPage!'10'}",
+      additionalQueryParams: "${args.additionalQueryParams!''}",
+      show_id_column: "${args.show_id_column!'show'}",
+      show_user_column: "${args.show_user_column!'show'}",
+      show_time_column: "${args.show_time_column!'show'}",
+      show_values_column: "${args.show_values_column!'show'}"
    }).setMessages(${messages});
 
    <#-- dashlet resizer does not dynamically adjust the number of rows displayed on the page re: pagination -->
@@ -20,15 +20,15 @@
    <#-- future research : subscribe to rowsPerPageChange, "" etc...    -->
    new Alfresco.widget.DashletResizer("${el}", "${instance.object.id}").setOptions(
    {
-       <#-- IE (as usual) needs apparently a default height, otherwise resizing may not work in some situations -->
-       "minDashletHeight": ${default_height}
+      <#-- IE (as usual) needs apparently a default height, otherwise resizing may not work in some situations -->
+      minDashletHeight: ${default_height}
    });
 
 //]]></script>
 
 <div class="dashlet audit-application-dashlet" id="${el}-dashlet">
-    <div class="title" id="${el}-title">${msg("audit.dashlet.header.default")}</div>
-    <div class="refresh"><a id="${el}-refresh" href="#">&nbsp;</a></div>
+   <div class="title" id="${el}-title">${msg("audit.dashlet.header.default")}</div>
+   <div class="refresh"><a id="${el}-refresh" href="#">&nbsp;</a></div>
 
 
    <div class="toolbar yui-toolbar" id="${el}-toolbar">

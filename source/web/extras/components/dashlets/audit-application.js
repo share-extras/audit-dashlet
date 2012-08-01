@@ -522,9 +522,9 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                            // the least long array to avoid out-of-bounds reads
                            for (var match_index = 0; match_index < Math.min(matches.length,unmarked_matches.length); match_index++)
                            {
-                              var linked=link_start+$html(unmarked_matches[match_index])+link_class
-                                 +matches[match_index].swapHighlightMarkers()
-                                 +link_end;
+                              var linked = link_start+$html(unmarked_matches[match_index])+link_class
+                                             + matches[match_index].swapHighlightMarkers()
+                                             + link_end;
 
                               // switch out the plain noderef for a doc details link on that same noderef
                               displayed_value=displayed_value.replace(matches[match_index],linked);
@@ -616,7 +616,7 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
             ],
             metaFields:
             {
-                totalRecords : "count"
+               totalRecords : "count"
             }
          };
 
@@ -893,9 +893,9 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                   // also make sure we've gone through the entire input string, even if this current portion does not match
                   var new_remainder=remainder.substr(remaining_match[0].length ==0 ? 1 : remaining_match.index + remaining_match[0].length);
                   if (!new_remainder || remainder == new_remainder)
-                      break;
+                     break;
                   else
-                      remainder = new_remainder;
+                     remainder = new_remainder;
 
                   // for the next iteration
                   previous_remaining_match=remaining_match;
@@ -909,16 +909,16 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                   // We've moved across the whole string. Go back and replace what we've deferred, if any
                   for(var deferred_index = 0; deferred_index < deferred_matching_strings.length; deferred_index++)
                   {
-                      if (indexOfWrapper(matching_strings,deferred_matching_strings[deferred_index]) == -1)
-                      {
-                     var deferred_regex = new RegExp(deferred_matching_strings[deferred_index].sanitizeforHighlighting(),"g")
-                     field_value=field_value.replace(deferred_regex,highlight_open_marker+deferred_matching_strings[deferred_index]+highlight_close_marker);
-                      }
+                     if (indexOfWrapper(matching_strings,deferred_matching_strings[deferred_index]) == -1)
+                     {
+                        var deferred_regex = new RegExp(deferred_matching_strings[deferred_index].sanitizeforHighlighting(),"g")
+                        field_value=field_value.replace(deferred_regex,highlight_open_marker+deferred_matching_strings[deferred_index]+highlight_close_marker);
+                     }
                   }
 
                   // eliminate potential useless successive close open and open close markers
-                  field_value=field_value.replace(new RegExp(highlight_close_marker+highlight_open_marker,"g"),"")
-                                  .replace(new RegExp(highlight_open_marker+highlight_close_marker,"g"),"");
+                  field_value= field_value.replace(new RegExp(highlight_close_marker+highlight_open_marker,"g"),"")
+                                          .replace(new RegExp(highlight_open_marker+highlight_close_marker,"g"),"");
 
                   // marker block elision : eliminate nested markers, that are already enclosed in a larger mark block
                   // replace the field value with the elided version
@@ -966,20 +966,20 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
        */
       refreshDataTable_SearchWithinResults :  function AuditApplication_refreshDataTable_searchWithinResults()
       {
-          // get state for the new request. restate how the sorting order the data comes from straight from the datasource
-          var state = this.dataTable.getState();
+         // get state for the new request. restate how the sorting order the data comes from straight from the datasource
+         var state = this.dataTable.getState();
          state.sortedBy = {key:'id', dir:YAHOO.widget.DataTable.CLASS_DESC};
 
-          // Get filtered data
-          // If the search box is not empty, we add an internal query param that will not be used by the server,
-          // but that we will use in doBeforeCallback  to further refine and filter results that do not match the box value
-          this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "",
-          {
-         success : this.dataTable.onDataReturnInitializeTable,
-         failure : this.dataTable.onDataReturnInitializeTable,
-         scope   : this.dataTable,
-         argument: state
-          });
+         // Get filtered data
+         // If the search box is not empty, we add an internal query param that will not be used by the server,
+         // but that we will use in doBeforeCallback  to further refine and filter results that do not match the box value
+         this.entriesDataSource.sendRequest(this.searchBoxContainer.value ? "&searchWithinResults=" + this.searchBoxContainer.value : "",
+         {
+            success : this.dataTable.onDataReturnInitializeTable,
+            failure : this.dataTable.onDataReturnInitializeTable,
+            scope   : this.dataTable,
+            argument: state
+         });
       },
 
       lastButtonRefreshEventTimeStamp : null,

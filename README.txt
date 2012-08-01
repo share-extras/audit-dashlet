@@ -61,8 +61,8 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
     The number of data rows (audit events) displayed per page is configurable by the 'Entries per page' parameter.
 
     Additional server side filters are configurable :
-           UI Name                              Description                                  Audit API corresponding parameter
-      ------------------------------------------------------------------------------------------------------------------------------
+            UI Name                              Description                                  Audit API corresponding parameter
+    --------------------------------------------------------------------------------------------------------------------------------
     - value filter                  filter on the audit value (exact match, optional)                 'value'
     - limit                         maximum number of audit entries retrieved (optional)              'limit' (default 100)
     - Additional Query params       other possible query parameters (optional)                        from/to time, from/to id, user
@@ -88,23 +88,22 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
         -values:pro
 
     - mutliline matches are enabled, ^ and $ will match beginning of lines for audit values,
-      useful since there can be more than one line per audit entry
+        useful since there can be more than one line per audit entry
 
-    - query can match anywhere in the field by default. queries can be any valid javascript regular expression.
-      examples :
+    - query can match anywhere in the field by default. queries can be any valid javascript regular expression. examples :
         ^romain
         values:r.m...$
         id:\d\d8
         -time:21
 
-      The search box will turn green or red if the regex is valid or invalid, respectively
-      query can be restricted to the beginning by using ^romain (standard regex) for example.
+      The search box will turn green or red if the regex is valid or invalid, respectively.
+      The query can be restricted to the beginning by using ^romain (standard regex), for example.
       See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/regexp for more details.
 
       Each match of the regex in the audit entry will be highlighted. Deferred submatches are also supported for highlighting.
 
     - to search for a colon (:), use the field prefix, eg; field:.+:.+ or values:[^:]+: etc... otherwise the colon will be interpreted
-      as a field identifier
+        as a field identifier
 
     - noderefs in the audit values will be detected, and "enhanced" with a link to the docdetails page of that noderef
 
