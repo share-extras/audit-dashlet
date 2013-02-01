@@ -56,7 +56,7 @@
          <div class="body" style="height: ${currentHeight}px;" id="${el}-body">
             <div class="message spaced-left" id="${el}-message"></div>
 
-            <div class="spaced-left" id="${el}-searchbox">
+            <div class="spaced-left top-padded" id="${el}-searchbox">
                <#-- search box to filter audit values from YUI -->
                <label id="${el}-searchWithinResultsFilterLabel" for="${el}-searchWithinResultsFilter">${msg("audit.dashlet.searchWithinResults",0)} :</label>
                <input type="text" id="${el}-searchWithinResultsFilter">
