@@ -114,6 +114,11 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 Changelog
 ---------
 
+0.45:
+    - refined workaround against unquoted json feed for application and user json properties
+    - apply this workaround only when running against a repository affected by the bug
+    - minor CSS fix : historical margins for dashlet body no longer required.
+
 0.44:
     - expanded workaround against unquoted json feed for application and user json properties. addresses issue 71.
     - additional newline sanitizing of the server side json feed, in addition to the checks already present in the freemarker output. possibly addresses issue 82.

@@ -11,10 +11,15 @@
    height: 90%;
 }
 
-.audit-application-dashlet .body
+/*.audit-application-dashlet .body
 {
    margin-top: 10px;
    margin-bottom: 10px;
+}*/
+
+.audit-application-dashlet .top-padded
+{
+ margin-top: 10px;
 }
 
 .audit-application-dashlet .yui-dt table
