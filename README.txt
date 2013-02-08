@@ -58,18 +58,17 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
     For convenience, the list will pop out when opening the configure dialog with no applications currently configured.
     Could be useful if you don't know what application name to search for.
 
-    The number of data rows (audit events) displayed per page is configurable with the 'Entries per page' parameter.
+    The number of data rows (audit events) displayed per page is configurable with the 'Entries per page' parameter. It defaults to 10.
 
     Additional server side filters are configurable :
-            UI Name                              Description                                  Audit API corresponding parameter
-    --------------------------------------------------------------------------------------------------------------------------------
-    - Value Filter                  filter on the audit value (exact match, optional)                 'value'
-    - Max Entry Count               maximum number of audit entries retrieved (optional)              'limit' (default 100)
-    - Audit Path Filter             select only the audit entries with a matching audit path          URL path after application (default none)
-                                    key in their values map.
-    - Additional Query params       other possible query parameters (optional)                        from/to time, from/to id, user
-
-    (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
+            UI Name                              Description                                                   Audit API corresponding parameter
+    -----------------------------------------------------------------------------------------------------------------------------------------------------
+    - Value Filter                  filter on the audit value (exact match, optional)                          'value'
+    - Max Entry Count               maximum number of audit entries retrieved (optional)                       'limit' (default 100)
+    - Audit Path Filter             select only the audit entries with a matching audit path                   URL path after application (default none)
+                                    key in their values map. (optional)
+    - Additional Query params       other possible server-side query parameters (optional). Separated by &.    from/to time, from/to id, user, valueType, ...
+                                    (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query).
 
     The columns to display are also configurable (show/hide).
 
