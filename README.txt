@@ -40,7 +40,7 @@ The dashlet has been developed to install on top of an existing Alfresco 3.4 ins
 
     Once you have run this you will need to restart Tomcat so that the classpath resources in the JAR file are picked up.
 
-    As an alternative, you may also copy the exploded files in your classpath, but they must have the classpath tree
+    As an alternative, you may also copy the exploded files in your classpath, but they must have the same classpath tree
     than the one in the jar. If using development/debug mode for the web framework, you will not need to restart tomcat,
     but you may have to clear your browser's cache.
 
@@ -58,13 +58,15 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
     For convenience, the list will pop out when opening the configure dialog with no applications currently configured.
     Could be useful if you don't know what application name to search for.
 
-    The number of data rows (audit events) displayed per page is configurable by the 'Entries per page' parameter.
+    The number of data rows (audit events) displayed per page is configurable with the 'Entries per page' parameter.
 
     Additional server side filters are configurable :
             UI Name                              Description                                  Audit API corresponding parameter
     --------------------------------------------------------------------------------------------------------------------------------
-    - value filter                  filter on the audit value (exact match, optional)                 'value'
-    - limit                         maximum number of audit entries retrieved (optional)              'limit' (default 100)
+    - Value Filter                  filter on the audit value (exact match, optional)                 'value'
+    - Max Entry Count               maximum number of audit entries retrieved (optional)              'limit' (default 100)
+    - Audit Path Filter             select only the audit entries with a matching audit path          URL path after application (default none)
+                                    key in their values map.
     - Additional Query params       other possible query parameters (optional)                        from/to time, from/to id, user
 
     (See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4)#Advanced_Query). This filtering is done server-side.
@@ -73,6 +75,14 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 
     Note : the output in the "audited values" field will depend on the configuration of the current audit application.
     (ie what data extractors have been configured, if using the access auditor or not, etc...).
+
+    Note : querying for values when an audit path query is configured will restrict the search to entries with that value for that specific audit path.
+
+    The "Trim Audit Paths" checkbox can be used to show the full audit paths up to the audit key, or just the audit key, in the audit values.
+    It can be useful to temporarily turn on in case one wants to use the audit path filter above, as it will show the full audit paths required for that filter.
+
+    Note : The data webscript does a version check to determine if a workaround for the unquoted json feed prior to 3.4.3 Enterprise / 4.0 Community (ALF-8307) is required.
+    This can be overriden by copying the webscript config file (audit-application-data.get.config.xml) in the equivalent path in web-extension, if required.
 
  * Search box
 
@@ -113,6 +123,16 @@ of the dashboard and drag the dashlet into one of the columns from the list of d
 
 Changelog
 ---------
+
+0.5:
+    - fixed config dialog URL to use /res, required in 4.2. addresses issue 129.
+    - added the configurable server-side ability to query for entries containing a specific audit path.
+         Note : querying for values when an audit path query is configured will restrict the search to entries with that value for that specific audit path.
+    - made the repo version check configurable through the audit application data webscript config file
+    - made the audit path trimming configurable through the config dialog
+    - minor : added the year by default in the displayed timestamps.
+    - fixed ID format for json entries, to make sure the ID representation does not have comma separators for high entry IDs. addresses issue 129, comment #6.
+    - fixed an unreported issue where storing config values with double quotes in the text would prevent the config options to be loaded afterwards.
 
 0.45:
     - refined workaround against unquoted json feed for application and user json properties

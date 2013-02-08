@@ -1,35 +1,53 @@
 function main()
 {
+   // read this webscript's config.
+   var scriptConfig = new XML(config.script);
+   var enableVersionCheck = (scriptConfig["enableVersionCheck"] == "true");
+
+   if (logger.isLoggingEnabled())
+      logger.log("script config - enableVersionCheck : " +enableVersionCheck);
+
    var application = args.application;    // audit application name (as reported by /api/audit/control)
    var valueFilter = args.valueFilter;    // optional : "value" filter on the audit entries. match all
    var limit = args.limit;                // optional : max entry count retrieved by the repo query
 
-   // optional : free field to add in other server-side filters (e.g fromTime...)
-   var additionalQueryParams = args.additionalQueryParams;
+   var pathFilter = args.pathFilter;      // optional : select only the audit entries which possess a matching audit path key in their values map.
+   var additionalQueryParams = args.additionalQueryParams;     // optional : free field to add in other server-side filters (e.g fromTime...)
+
+   // optional : keep only the audit key for better readability / shorter text.
+   // Path trimming applies to the freemarker template, so push it into the model.
+   model.trimAuditPaths = (args.trimAuditPaths ? (args.trimAuditPaths == "true") : false);
+   if (logger.isLoggingEnabled())
+      logger.log("trimAuditPaths:" +model.trimAuditPaths);
 
    if (application != null)
    {
       var valueFilterQuery = valueFilter ? "&value=" + stringUtils.urlEncode(valueFilter) : "";
-      if (logger.isLoggingEnabled())
-         logger.log("  application:" +application+ " - " + "valueFilter:" +valueFilter);
-
       var maxEntryCount = limit ? "&limit=" + stringUtils.urlEncode(limit) : "";
 
-      // decode the '&' param separators from the optional additional params passed in by the dashlet.
-      var optionalAdditionalQueryParams = additionalQueryParams ? ("&" + additionalQueryParams.replace(/\uFFFF/g,'&')) : "";
+      // this pathFilter is not a URL argument, it will be appended to the application name.
+      // Note : pending the ability to call the urlEncoder with reserveUriChars set to true, only the '/' are decoded back with a regex replace for use by the repo audit webscript.
+      var pathFilterQuery = pathFilter ? (stringUtils.urlEncode(pathFilter)+"").replace(/\%2f/g,'/') : "";
 
+      if (logger.isLoggingEnabled())
+         logger.log("  application:" +application+ " - " + "  - pathFilterQuery: '" +pathFilterQuery+ "'" + "valueFilterQuery:" +valueFilterQuery);
+
+      // decode the '&' param separators from the optional additional params passed in by the dashlet, and encode the rest with the standard encoder (see note above).
+      var optionalAdditionalQueryParams = additionalQueryParams ? ("&" + encodeURI(additionalQueryParams.replace(/\uFFFF/g,'&'))) : "";
       if (logger.isLoggingEnabled())
          logger.log("  optionalAdditionalQueryParams: '" +optionalAdditionalQueryParams+ "'");
 
       var sortOrder =  "&forward=" + false; // most recent first
 
-      var uri = "/api/audit/query/"+stringUtils.urlEncode(application)+"?verbose=true"
+      // build the query URL using all the required parameters and perform the request.
+      // Note optionalAdditionalQueryParams is unencoded, pending the ability to call the urlEncoder with reserveUriChars set to true.
+      var uri = "/api/audit/query/"+stringUtils.urlEncode(application) +  "/" + pathFilterQuery +"?verbose=true"
                   + optionalAdditionalQueryParams + valueFilterQuery + maxEntryCount + sortOrder;
 
       var connector = remote.connect("alfresco");
       var result = connector.get(uri);
       if (logger.isLoggingEnabled())
-      logger.log("called URI:'"+uri+"'");
+         logger.log("called URI:'"+uri+"'");
 
 
       if (result.status == status.STATUS_OK)
@@ -37,7 +55,14 @@ function main()
          var rawresponse = result.response+""; // cast rawresponse back into a js string
          //if (logger.isLoggingEnabled()) logger.log("rawresponse:\n"+rawresponse);
 
-         var jsonQuoteFixRequired = isJsonQuoteFixRequired(connector);
+         var jsonQuoteFixRequired = false;
+         if(enableVersionCheck)
+         {
+            if (logger.isLoggingEnabled())
+               logger.log("versionCheck is enabled, will check repo version");
+            jsonQuoteFixRequired = isJsonQuoteFixRequired(connector);
+         }
+
          if (logger.isLoggingEnabled())
             logger.log("jsonQuoteFixRequired:'"+jsonQuoteFixRequired+"'");
 

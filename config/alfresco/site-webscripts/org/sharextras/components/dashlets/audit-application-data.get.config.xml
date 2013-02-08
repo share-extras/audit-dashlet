@@ -1,0 +1,4 @@
+<config>
+   <!-- if true, the script will check the current version of the repo to determine if the feed needs to be fixed for missing quotes before it gets parsed -->
+   <enableVersionCheck>true</enableVersionCheck>
+</config>
