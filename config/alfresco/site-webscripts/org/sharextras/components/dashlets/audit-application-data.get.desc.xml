@@ -1,6 +1,6 @@
 <webscript>
    <shortname>Audit Application Data Component</shortname>
    <description>Audit Application Data Component</description>
-   <url>/components/dashlets/audit-application/entries?application={application}&amp;valueFilter={valueFilter}&amp;limit={limit}&amp;additionalQueryParams={additionalQueryParams}</url>
+   <url>/components/dashlets/audit-application/entries?application={application}&amp;valueFilter={valueFilter}&amp;limit={limit}&amp;pathFilter={pathFilter}&amp;trimAuditPaths={trimAuditPaths}&amp;additionalQueryParams={additionalQueryParams}</url>
    <format default="json">extension</format>
 </webscript>

@@ -139,6 +139,15 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
          rowsPerPage: "",
 
          /**
+         * Audit Path Filter. This allows to select only the audit entries which possess a matching audit path key in their values map.
+         *
+         * @property pathFilter
+         * @type string
+         * @default ""
+         */
+         pathFilter: "",
+
+         /**
          * Additional audit API server side query params
          *
          * @property additionalQueryParams
@@ -181,7 +190,16 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
          * @type string
          * @default ""
          */
-         show_values_column: ""
+         show_values_column: "",
+
+         /**
+         * Show the full audit paths as map keys, or trim to the last element of the path (i.e. audit key only)
+         *
+         * @property show_values_column
+         * @type string
+         * @default ""
+         */
+         trim_audit_paths: ""
 
       },
 
@@ -361,64 +379,64 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
          }
       },
 
-         /**
-          * Add utility prototypes to String, so that they can be used easily throughout
-          *
-          * @method addUtilPrototypes
-          */
-         addUtilPrototypes: function AuditApplication_addUtilPrototypes()
+      /**
+       * Add utility prototypes to String, so that they can be used easily throughout
+       *
+       * @method addUtilPrototypes
+       */
+      addUtilPrototypes: function AuditApplication_addUtilPrototypes()
+      {
+         // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf.
+         // These characters have been reserved for in-process usage by the unicode chart, and are guaranteed to not map
+         // to an actual character, in any alphabet.Therefore they won't need to be escaped throughout the string.
+         // prefix : an optional prefix before the span
+         String.prototype.swapHighlightMarkers = function(prefix)
          {
-            // use unassignable/non-characters unicode codepoints as markers. see unicode.org/charts/PDF/uFFF0.pdf.
-            // These characters have been reserved for in-process usage by the unicode chart, and are guaranteed to not map
-            // to an actual character, in any alphabet.Therefore they won't need to be escaped throughout the string.
-            // prefix : an optional prefix before the span
-            String.prototype.swapHighlightMarkers = function(prefix)
-            {
-               return this.replace(/\uFFFE/g, (prefix ? prefix : "") + "<span class='regex-highlight'>").replace(/\uFFFF/g,"</span>");
-            };
+            return this.replace(/\uFFFE/g, (prefix ? prefix : "") + "<span class='regex-highlight'>").replace(/\uFFFF/g,"</span>");
+         };
 
-            // remove markers and replace with an optional replacement
-            String.prototype.trimHighlightMarkers = function(replacement)
-            {
-               return this.replace(/[\uFFFE\uFFFF]/g, replacement ? replacement : "");
-            };
+         // remove markers and replace with an optional replacement
+         String.prototype.trimHighlightMarkers = function(replacement)
+         {
+            return this.replace(/[\uFFFE\uFFFF]/g, replacement ? replacement : "");
+         };
 
-            //treat metacharacters in the text as literal since there may be dots in an audit value that would be in a filename for example
-            String.prototype.sanitizeforHighlighting = function(text)
+         //treat metacharacters in the text as literal since there may be dots in an audit value that would be in a filename for example
+         String.prototype.sanitizeforHighlighting = function(text)
+         {
+            var metacharacters="$()*+.?[\^{|";
+            return this.replace(/([\$\(\)\*\+\.\?\[\\\^\{\|])/g,function($0)
             {
-               var metacharacters="$()*+.?[\^{|";
-               return this.replace(/([\$\(\)\*\+\.\?\[\\\^\{\|])/g,function($0)
-               {
-                  return "\\"+$0;
-               });
-            };
+               return "\\"+$0;
+            });
+         };
 
-            // marker block elision : eliminate nested markers, that are already enclosed in a larger mark block
-            // e.g : <Space<s<S>>tore> => <SpacesStore>, etc...
-            String.prototype.elideHighlightMarkers = function(open_marker_char, close_marker_char)
-            {
-            var opened=false; var skip_next_close_stack=[];
-            var rebuild=""; var c ='';
+         // marker block elision : eliminate nested markers, that are already enclosed in a larger mark block
+         // e.g : <Space<s<S>>tore> => <SpacesStore>, etc...
+         String.prototype.elideHighlightMarkers = function(open_marker_char, close_marker_char)
+         {
+         var opened=false; var skip_next_close_stack=[];
+         var rebuild=""; var c ='';
 
-            for(var j=0; j< this.length; j++)
+         for(var j=0; j< this.length; j++)
+         {
+            c = this.charAt(j);
+            if (c == open_marker_char)
             {
-               c = this.charAt(j);
-               if (c == open_marker_char)
-               {
-                  if (!opened)  { opened=true;rebuild+=c;}
-                  else skip_next_close_stack.push(true);
-               }
-               else if (c == close_marker_char)
-               {
-                  if (skip_next_close_stack.length == 0) {rebuild+=c; opened=false;}
-                  else skip_next_close_stack.pop();
-               }
-               else rebuild+=c;
+               if (!opened)  { opened=true;rebuild+=c;}
+               else skip_next_close_stack.push(true);
             }
+            else if (c == close_marker_char)
+            {
+               if (skip_next_close_stack.length == 0) {rebuild+=c; opened=false;}
+               else skip_next_close_stack.pop();
+            }
+            else rebuild+=c;
+         }
 
-            return rebuild;
-            };
-         },
+         return rebuild;
+         };
+      },
 
       /**
        * Load entries and render in the dashlet
@@ -468,7 +486,7 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                   if (oData instanceof Date)
                   {
                      var oDate= new Date(oData);
-                     elCell.innerHTML = YAHOO.util.Date.format(oDate, { format: "%e/%m %H:%M"} );
+                     elCell.innerHTML = YAHOO.util.Date.format(oDate, { format: "%e/%m/%y %H:%M"} );
                   }
                   else // date object may have been switched by text for highlighting, leave as is
                      elCell.innerHTML = (oData+"").swapHighlightMarkers();
@@ -543,8 +561,11 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
          ];
 
 
-         var auditValueFilterquery = this.options.valueFilter ? "&valueFilter="+encodeURI(this.options.valueFilter) : "";
-         var limitquery            = this.options.limit ? "&limit="+encodeURI(this.options.limit) : "";
+         // arguments for the audit entries data webscript, used as a datasource for the dashlet's dataTable
+         var auditValueFilterQuery = this.options.valueFilter      ? "&valueFilter="    + encodeURI(this.options.valueFilter)      : "";
+         var limitQuery            = this.options.limit            ? "&limit="          + encodeURI(this.options.limit)            : "";
+         var auditPathFilterQuery  = this.options.pathFilter       ? "&pathFilter="     + encodeURI(this.options.pathFilter)       : "";
+         var trimAuditPathsQuery   = this.options.trim_audit_paths ? "&trimAuditPaths=" + encodeURI(this.options.trim_audit_paths) : "";
 
          // add in any optional server side query param. since they will be separated by a '&', encode it with an unassignable
          // unicode code point. it will be decoded by the data webscript that will perform the actual audit API query call.
@@ -553,10 +574,10 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
 
          // build out the URL to the datasource using our own parameters
          // the call to the "Audit Application Data Component" webscript will handle the actual audit query call to the repo.
-         // Its repsonse will, as a 1st step, filter out the audit application path to keep the key only for dashlet readability
+         // Its response will, as a 1st step, filter out the audit application path to keep the key only for dashlet readability
          var dataSourceURI=Alfresco.constants.URL_SERVICECONTEXT
             +  "components/dashlets/audit-application/entries?application="
-            + encodeURI(this.options.application) + auditValueFilterquery + limitquery + additionalQueryParams;
+            + encodeURI(this.options.application) + auditValueFilterQuery + limitQuery + auditPathFilterQuery + trimAuditPathsQuery + additionalQueryParams;
 
          var myDataSource = new YAHOO.util.DataSource(dataSourceURI);
 
@@ -823,7 +844,7 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
             {
                //special case : match date instances to the current display format (see formatter for time column)
                if (input[i][field] instanceof Date)
-                  input[i][field] = YAHOO.util.Date.format(input[i][field], { format: "%e/%m %H:%M"} );
+                  input[i][field] = YAHOO.util.Date.format(input[i][field], { format: "%e/%m/%y %H:%M"} );
 
                // just in case, trim existing markers coming from the data and replace with a space, although unlikely
                // as the markers have been specifically chosen to be non-character codepoints
@@ -1050,22 +1071,39 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
 
       /**
        * Used to 'transfer' checkbox state changes to hidden text fields.
-       * These hidden fields will be persisted in the dashlet repo xml config, rather than the checkboxes, whose state seem to
+       * These hidden/associated fields will be persisted in the dashlet repo xml config, rather than the checkboxes, whose state seem to
        * only be persisted if their state is enabled (i.e. not on->off transition persistence).
        *
        * @method setupBoxListener
-       * @param {String} field    the dataTable field key on which to setup the listener
+       * @param {String} checkbox_field_id               the html id suffix for the actual checkbox field
+       * @param {String} associated_field_id             the html id suffix for the hidden field associated to the checkbox field
+       * @param {String} associated_checked_value        the string value corresponding to a checked state, that will be persisted in the preferences in place of the checked state
+       * @param {String} associated_unchecked_value      the string value corresponding to a unchecked state, that will be persisted in the preferences in place of the unchecked state
+       *
        */
-      setupBoxListener: function(field)
+      setupBoxListener: function(checkbox_field_id, associated_field_id, associated_checked_value, associated_unchecked_value)
       {
          var configDialog = this.configDialog;
 
-         YAHOO.util.Event.addListener(Dom.get(configDialog.id + "-checkbox-show_"+field+"_column"), 'click',
-         function()
-         {
-            Dom.get(configDialog.id + "-show_"+field+"_column").value= (this.checked ? "show" : "hide");
-         });
+         YAHOO.util.Event.addListener(Dom.get(configDialog.id + checkbox_field_id), 'click',
+                                      function()
+                                      {
+                                         Dom.get(configDialog.id + associated_field_id).value= (this.checked ? associated_checked_value : associated_unchecked_value);
+                                      });
       },
+
+      /**
+       * Convenience call to setupFieldBoxListener, with some parameters already filled in.
+       *
+       * @method setupFieldBoxListener
+       * @param {String} field    the dataTable field key on which to setup the listener
+       * @see setupBoxListener
+       */
+      setupFieldBoxListener: function(field)
+      {
+         this.setupBoxListener("-checkbox-show_"+field+"_column", "-show_"+field+"_column", "show", "hide");
+      },
+
 
       /**
        * Configuration click handler
@@ -1104,6 +1142,8 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                      if (isNaN(this.options.rowsPerPage)  || (this.options.rowsPerPage * 1) < 1 )
                         this.options.rowsPerPage = this.options.defaultRowsPerPage; // invalid values (not strictly positive integers) are dropped
 
+                     this.options.pathFilter = Dom.get(this.configDialog.id + "-pathFilter").value;
+
                      this.options.additionalQueryParams = Dom.get(this.configDialog.id + "-additionalQueryParams").value;
 
                      //table fields to display. in reverse, we use the 'checked' flag to toggle the html field value and save
@@ -1111,6 +1151,8 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                      this.options.show_user_column = Dom.get(this.configDialog.id + "-show_user_column").value;
                      this.options.show_time_column = Dom.get(this.configDialog.id + "-show_time_column").value;
                      this.options.show_values_column = Dom.get(this.configDialog.id + "-show_values_column").value;
+
+                     this.options.trim_audit_paths = Dom.get(this.configDialog.id + "-trim_audit_paths").value;
 
                      this.init();
                   },
@@ -1135,6 +1177,9 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                      else
                         Dom.get(this.configDialog.id + "-rowsPerPage").value = this.options.rowsPerPage.replace(/^0+/,''); // trim leading zeros, if any
 
+                     // match the value filter against a specific audit path filtering
+                     Dom.get(this.configDialog.id + "-pathFilter").value = this.options.pathFilter;
+
                      // additional audit API server side query params
                      Dom.get(this.configDialog.id + "-additionalQueryParams").value = this.options.additionalQueryParams;
 
@@ -1154,13 +1199,19 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                      Dom.get(this.configDialog.id + "-show_values_column").value    =    this.options.show_values_column;
                      Dom.get(this.configDialog.id + "-checkbox-show_values_column").checked = (this.options.show_values_column == "show");
 
-                     // when a checkbox is clicked, a hidden field will be updated with the checkbox state value.
-                     // It's a workaround for the fact that the property persistence service does not seem to like checkboxes
-                     this.setupBoxListener("id");
-                     this.setupBoxListener("user");
-                     this.setupBoxListener("time");
-                     this.setupBoxListener("values");
+                     // show full audit paths or trim them to the last path element (key)
+                     Dom.get(this.configDialog.id + "-trim_audit_paths").value    =    this.options.trim_audit_paths;
+                     Dom.get(this.configDialog.id + "-checkbox-trim_audit_paths").checked = (this.options.trim_audit_paths == "true");
 
+                     // when a checkbox is clicked, a hidden field will be updated with the checkbox state value.
+                     // It's a workaround for the fact that the property persistence service does not seem to like checkboxes.
+                     this.setupFieldBoxListener("id");
+                     this.setupFieldBoxListener("user");
+                     this.setupFieldBoxListener("time");
+                     this.setupFieldBoxListener("values");
+
+                     // set up a listener for the trim audit paths checkbox. it is not one of the named table columns to show/hide so use setupBoxListener directly.
+                     this.setupBoxListener("-checkbox-trim_audit_paths", "-trim_audit_paths", "true", "false");
 
                      // Define AutoComplete controls
                      // Use a XHRDataSource to get the current list of audit applications from the repo as a json response
