@@ -1264,7 +1264,7 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
 
                      // work around IE's inability to align the textbox properly, if an autocomplete div is attached...
                      if (YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie < 8)
-                        Dom.addClass(Dom.get(this.configDialog.id + "-application-div"),'ac-app-ie');
+                        Dom.addClass(Dom.get(this.configDialog.id + "-application-div"),'audit-application-dashlet-ac-app-ie');
 
 
                      //Instantiate the other field AutoComplete. not needed for now. kept as a reference

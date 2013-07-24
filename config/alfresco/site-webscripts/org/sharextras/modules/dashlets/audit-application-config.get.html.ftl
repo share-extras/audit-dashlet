@@ -39,21 +39,21 @@
          <div class="yui-u first"><span>${msg("audit.dashlet.config.label.show_fields")} :</span></div>
          <div class="yui-u">
             <input type="checkbox" id="${el}-checkbox-show_id_column"     name="checkbox-show_id_column"/>
-            <span class="spaced-right">${msg("audit.dashlet.field.label.id")}</span>
+            <span class="audit-application-dashlet-spaced-right">${msg("audit.dashlet.field.label.id")}</span>
 
             <input type="checkbox" id="${el}-checkbox-show_user_column"   name="checkbox-show_user_column"/>
-            <span class="spaced-right">${msg("audit.dashlet.field.label.user")}</span>
+            <span class="audit-application-dashlet-spaced-right">${msg("audit.dashlet.field.label.user")}</span>
 
             <input type="checkbox" id="${el}-checkbox-show_time_column"   name="checkbox-show_time_column"/>
-            <span class="spaced-right">${msg("audit.dashlet.field.label.time")}</span>
+            <span class="audit-application-dashlet-spaced-right">${msg("audit.dashlet.field.label.time")}</span>
 
             <input type="checkbox" id="${el}-checkbox-show_values_column" name="checkbox-values_column"/>
-            <span class="spaced-right">${msg("audit.dashlet.field.label.values")}</span>
+            <span class="audit-application-dashlet-spaced-right">${msg("audit.dashlet.field.label.values")}</span>
          </div>
          <br>
          <div class="yui-u first"><span>${msg("audit.dashlet.config.label.trim_audit_paths")} :</span></div>
          <div class="yui-u">
-            <span class="spaced-right"><input type="checkbox" id="${el}-checkbox-trim_audit_paths" name="checkbox-trim_audit_paths"/></span>
+            <span class="audit-application-dashlet-spaced-right"><input type="checkbox" id="${el}-checkbox-trim_audit_paths" name="checkbox-trim_audit_paths"/></span>
          </div>
       </div>
    </div>

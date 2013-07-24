@@ -39,15 +39,15 @@
 
 
    <div class="toolbar yui-toolbar" id="${el}-toolbar">
-      <div class="links spaced-height" id="${el}-links">
+      <div class="links audit-application-dashlet-spaced-height" id="${el}-links">
          <#-- ie7 float bug : the align-right floated element must be declared before the non-floated (left) one... -->
-         <span class="custom-align-right">
+         <span class="audit-application-dashlet-custom-align-right">
             <a class="theme-color-1" href="${msg("audit.dashlet.link.help.url")}" id="${el}-help-link" target="_blank">${msg("audit.dashlet.link.help")}</a>
          </span>
 
          <#if userHasConfigPermission && userIsAdmin>
          <#-- for some reason, ie6 ignores the inherited left padding of the link -- wrap in a specific span if on ie6 -->
-         <!--[if IE 6]>   <span class="spaced-left"> <![endif]-->
+         <!--[if IE 6]>   <span class="audit-application-dashlet-spaced-left"> <![endif]-->
          <span>
             <a class="theme-color-1" href="#" id="${el}-configure-link">${msg("audit.dashlet.link.configure")}</a>
          </span>
@@ -61,9 +61,9 @@
       <#assign currentHeight=default_height>
       <#if args.height??><#assign currentHeight=args.height></#if>
          <div class="body" style="height: ${currentHeight}px;" id="${el}-body">
-            <div class="message spaced-left" id="${el}-message"></div>
+            <div class="message audit-application-dashlet-spaced-left" id="${el}-message"></div>
 
-            <div class="spaced-left top-padded" id="${el}-searchbox">
+            <div class="audit-application-dashlet-spaced-left top-padded" id="${el}-searchbox">
                <#-- search box to filter audit values from YUI -->
                <label id="${el}-searchWithinResultsFilterLabel" for="${el}-searchWithinResultsFilter">${msg("audit.dashlet.searchWithinResults",0)} :</label>
                <input type="text" id="${el}-searchWithinResultsFilter">
@@ -72,7 +72,7 @@
             <div class="entries custom-scrollable-list" id="${el}-entries"></div>
          </div>
    <#else>
-      <div class="body spaced-left" id="${el}-body">
+      <div class="body audit-application-dashlet-spaced-left" id="${el}-body">
          ${msg("audit.dashlet.adminPrivilegesRequired")}
       </div>
    </#if>

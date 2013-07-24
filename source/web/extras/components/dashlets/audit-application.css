@@ -52,33 +52,28 @@
    padding-left: 10px;
 }
 
-.spaced-left
+.audit-application-dashlet-spaced-left
 {
    padding-left: 10px;
 }
 
-.spaced-more-left
-{
-   padding-left: 30px;
-}
-
-.spaced-right
+.audit-application-dashlet-spaced-right
 {
    padding-right: 10px;
 }
 
-.custom-align-right
+.audit-application-dashlet-custom-align-right
 {
    float: right;
 }
 
-.spaced-height
+.audit-application-dashlet-spaced-height
 {
    padding-top: 5px;
    padding-bottom: 5px;
 }
 
-.ac-app-ie
+.audit-application-dashlet-ac-app-ie
 {
    padding-left: 8px !important;
 }
