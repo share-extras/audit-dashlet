@@ -10,6 +10,13 @@ See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4) on how to define audit ap
 
 From 3.4.4, also see http://wiki.alfresco.com/wiki/Content_Auditing and http://wiki.alfresco.com/wiki/Audit_Filter.
 
+![Audit Dashlett](/screenshots/en/audit-dashlet-default.png)
+
+Note : the output in the "audited values" field will depend on the configuration of the current audit application 
+(ie what data extractors have been configured, if using the access auditor or not, etc ...). 
+The default applications output will generally be more verbose. Here, the screenshots are made using 
+simple data extractors, for clarity of the captured output.
+
 Installation
 ------------
 
@@ -92,6 +99,9 @@ Using the dashlet
       This can be overriden by copying the webscript config file (audit-application-data.get.config.xml) in the equivalent path in web-extension, if required.
 
 
+    Below is a screenshot of the current configuration dialog :  
+    
+    ![Audit Dashlett](/screenshots/en/audit-dashlet-configuration-dialog.png)
 
  * **Search box**
 
@@ -136,6 +146,26 @@ Using the dashlet
 
     This search is done by filtering out undesired entries coming from the datasource prior to browser display.
 
+Screenshots
+-----------
+
+Some sample screenshots with different configurations are included below :  
+
+1. filtering with regular expressions :
+
+   ![Audit Dashlett](/screenshots/en/audit-dashlet-field-regex.png)  
+   This search is done by filtering out undesired entries coming from the datasource prior to browser display.
+
+
+2. transforming noderef into links :
+
+   ![Audit Dashlett](/screenshots/en/audit-dashlet-noderef-links.png)
+
+3. using the [Access Auditor](http://wiki.alfresco.com/wiki/Content_Auditing#Audit_Data_Generated_By_AccessAuditor), with 'Trim Audit Paths' de-selected :
+
+   ![Audit Dashlett](/screenshots/en/audit-dashlet-full-auditPaths.png)
+
+4. etc...
 
 Changelog
 ---------
