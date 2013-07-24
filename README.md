@@ -265,4 +265,4 @@ Changelog
 
 0.1 :
 
-    - inital release
+    - initial release
