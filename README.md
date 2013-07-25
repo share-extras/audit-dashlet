@@ -8,8 +8,9 @@ This project defines a custom dashlet to display events for any given audit appl
 The dashlet will need to have auditing application(s) already configured, and, to be useful, some events captured.
 See http://wiki.alfresco.com/wiki/Auditing_(from_V3.4) on how to define audit applications and some samples.
 
-From 3.4.4, also see http://wiki.alfresco.com/wiki/Content_Auditing and http://wiki.alfresco.com/wiki/Audit_Filter.
+For Alfresco 3.4.4 and above,see also http://wiki.alfresco.com/wiki/Content_Auditing and http://wiki.alfresco.com/wiki/Audit_Filter.
 
+Below is a sample screenshot of the dashlet :  
 ![Audit Dashlett](/screenshots/en/audit-dashlet-default.png)
 
 Note : the output in the "audited values" field will depend on the configuration of the current audit application 
@@ -20,9 +21,9 @@ simple data extractors, for clarity of the captured output.
 Installation
 ------------
 
-The dashlet has been developed to install on top of an existing Alfresco 3.4 installation.
+The dashlet can be installed on Alfresco 3.4 and above.
 
- * **Users : Prebuilt jar**
+* **Users : Prebuilt jar**
 
     A prebuilt jar is provided. You only need to copy it to <tomcat-home>/shared/lib.
 
