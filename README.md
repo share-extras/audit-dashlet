@@ -173,7 +173,7 @@ Changelog
 0.51:
 
     - no new features or bugfixes
-    - moved README to markdown syntax due to GitHub migration
+    - moved README to markdown syntax as part of the migration to GitHub
     - small css class name changes
 
 0.5:
