@@ -25,7 +25,7 @@ The dashlet can be installed on Alfresco 3.4 and above.
 
 * **Users : Prebuilt jar**
 
-    A prebuilt jar is provided. You only need to copy it to <tomcat-home>/shared/lib.
+    A prebuilt jar is provided. You only need to copy it to tomcat/shared/lib.
 
 * **Developers : Building the jar**
 
@@ -40,8 +40,8 @@ The dashlet can be installed on Alfresco 3.4 and above.
     The command should build a JAR file named sample-audit-dashlet.jar in the 'dist' directory within your project.
 
     To deploy the dashlet files into a local Tomcat instance for testing, you can
-    either copy the jar file in e.g. the 'tomcat/shared/lib' folder or use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
-    property in Ant.
+    either copy the jar file in e.g. the 'tomcat/shared/lib' folder or use the hotcopy-tomcat-jar task. For the latter, You will need to set the tomcat.home
+    property in Ant :
 
         ant -Dtomcat.home=C:/Alfresco/tomcat clean hotcopy-tomcat-jar
 
