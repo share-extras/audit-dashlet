@@ -175,6 +175,7 @@ Changelog
 
     - no new features or bugfixes
     - moved README to markdown syntax as part of the migration to GitHub
+    - updated the help link to point to GitHub instead of the wiki on Google Code
     - small css class name changes
 
 0.5:
