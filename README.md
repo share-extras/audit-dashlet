@@ -57,14 +57,14 @@ Using the dashlet
  * **Adding the dashlet**
 
   - Log in to Alfresco Share and navigate to a site where you are a Site Manager, or to your user dashboard.
-  - Click the *Customize Dashboard* button to edit the contents of the dashboard. Drag the `Audit Application` dashlet into one of the columns from the list of dashlets to add it.
-  - Click OK to save the configuration.
+  - Click the `Customize Dashboard`button to edit the contents of the dashboard. Drag the `Audit Application` dashlet into one of the columns from the list of dashlets to add it.
+  - Click `OK` to save the configuration.
   - The dashlet should now be shown in your dashboard.
 
 
  * **Configuration** :
 
-    Click Configure to choose an existing audit application. Results will appear as you type and will be matched
+    Click `Configure` to choose an existing audit application. Results will appear as you type and will be matched
     against the live list of audit applications as reported by /api/audit/control.
 
     For convenience, the list will pop out when opening the configure dialog with no applications currently configured.
