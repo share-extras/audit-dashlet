@@ -27,7 +27,7 @@ The dashlet can be installed on Alfresco 3.4 and above.
 
     A prebuilt jar is provided. You only need to copy it to <tomcat-home>/shared/lib.
 
- * **Developers : Building the jar**
+* **Developers : Building the jar**
 
     For developers, an Ant build script is provided to build a JAR file containing the
     custom files, which can then be installed into the 'tomcat/shared/lib' folder
