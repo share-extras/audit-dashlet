@@ -171,6 +171,10 @@ Some sample screenshots with different configurations are included below :
 Changelog
 ---------
 
+0.52:
+
+    - fixed javascript issue with non-admin users. Addresses (new) Github issue #1.
+
 0.51:
 
     - no new features or bugfixes

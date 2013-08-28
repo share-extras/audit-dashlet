@@ -291,15 +291,18 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
          this.searchBoxContainer = Dom.get(this.id + "-searchWithinResultsFilter");
          this.searchBoxLabelContainer = Dom.get(this.id + "-searchWithinResultsFilterLabel");
 
-         if (YAHOO.env.ua.webkit > 0)
-            Dom.removeClass(this.entriesContainer,"scrollableList");
+         // if there is no searchBox divs, the user is not an admin user. In this case there is no point initializing any further.
+         if(this.searchBoxLabelContainer != null)
+         {
+            if (YAHOO.env.ua.webkit > 0)
+               Dom.removeClass(this.entriesContainer,"scrollableList");
 
-         Event.addListener(this.id + "-configure-link", "click", this.onConfigClick, this, true);
-         Event.addListener(this.id + "-refresh", "click", this.onRefresh, this, true);
+            Event.addListener(this.id + "-configure-link", "click", this.onConfigClick, this, true);
+            Event.addListener(this.id + "-refresh", "click", this.onRefresh, this, true);
+            Event.addListener(this.searchBoxContainer,"keyup", this.onSearchWithinResultsFilterKeyup, this, true);
 
-         Event.addListener(this.searchBoxContainer,"keyup", this.onSearchWithinResultsFilterKeyup, this, true);
-
-         this.init();
+            this.init();
+         }
       },
 
       /**
