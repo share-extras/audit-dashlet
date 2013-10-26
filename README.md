@@ -61,6 +61,9 @@ Using the dashlet
   - Click `OK` to save the configuration.
   - The dashlet should now be shown in your dashboard.
 
+  Note : querying audit data is restricted by the Alfresco repository to users with administrator privileges. 
+  Therefore, only admin users will be able to use the dashlet and view audit data.
+
 
  * **Configuration** :
 
@@ -170,6 +173,12 @@ Some sample screenshots with different configurations are included below :
 
 Changelog
 ---------
+
+0.53:
+
+    - updated README to mention that the Alfresco repository restricts access to audit data to repository administrators only. Only admins will therefore be able to use the dashlet.
+    - README update addresses reported issue #3.
+    - no new features or bugfixes
 
 0.52:
 
