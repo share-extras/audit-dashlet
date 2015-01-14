@@ -9,7 +9,7 @@ function main()
 
    if (result.status == status.STATUS_OK)
    {
-      var auditcontrol = eval("(" + result.response + ")");
+      var auditcontrol = JSON.parse(result.response);
       model.auditcontrol = auditcontrol;
    }
    else

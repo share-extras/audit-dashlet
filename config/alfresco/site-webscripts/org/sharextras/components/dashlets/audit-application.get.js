@@ -2,18 +2,18 @@ function getUserIsSiteManager(username)
 {
    // Call the repository to see if the user is a site manager or not
    var userIsSiteManager = false;
-   var obj = context.properties["memberships"];
-   if (!obj)
+   var membership = context.properties["memberships"];
+   if (!membership)
    {
       var json = remote.call("/api/sites/" + page.url.templateArgs.site + "/memberships/" + stringUtils.urlEncode(username));
       if (json.status == 200)
       {
-         obj = eval('(' + json + ')');
+         membership = JSON.parse(json);
       }
    }
-   if (obj)
+   if (membership)
    {
-      userIsSiteManager = (obj.role == "SiteManager");
+      userIsSiteManager = (membership.role == "SiteManager");
    }
    return userIsSiteManager;
 }

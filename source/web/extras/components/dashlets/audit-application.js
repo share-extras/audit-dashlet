@@ -1259,6 +1259,8 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
                      appAutoComplete.queryMatchContains = true;
                      appAutoComplete.formatResult = formatResult;
                      appAutoComplete.itemSelectEvent.subscribe(appHandler);
+                     appAutoComplete.minQueryLength = 0; // 0 so that it shows the full list of applications when the config field is cleared. 
+                                                         // The application list should be quite small so 0-length query here should be OK.
 
                      // if no app is currently configured, preload the list to display all entries immediately on config popup
                      // the leading space has been intentionnally added by audit-application-applist.get.json.ftl

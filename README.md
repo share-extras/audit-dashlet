@@ -174,6 +174,13 @@ Some sample screenshots with different configurations are included below :
 Changelog
 ---------
 
+0.54:
+
+    - replaced the remaining eval calls by JSON.parse, for safety and improved parsing performance
+    - adjusted the application list autocomplete so it shows the full list of applications when the config field is cleared
+    - minor variable name change
+    - no new features
+
 0.53:
 
     - updated README to mention that the Alfresco repository restricts access to audit data to repository administrators only. Only admins will therefore be able to use the dashlet.

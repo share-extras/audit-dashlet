@@ -81,7 +81,7 @@ function main()
          var escaped_response = json_requoted_response.replace(/(\n|\r\n|\r)/g, " ");
          //if (logger.isLoggingEnabled()) logger.log("escaped_response:\n"+escaped_response);
 
-         var auditresponse = eval("(" + escaped_response + ")");
+         var auditresponse = JSON.parse(escaped_response);
          model.auditresponse = auditresponse;
          model.jsonResp = result.response;
       }
@@ -105,7 +105,7 @@ function isJsonQuoteFixRequired(connector)
 {
    // get current server version to determine if a workaround for ALF-8307 is needed.
    var srvInfo = connector.get("/api/server");
-   var srvInfoJson = eval('(' + srvInfo + ')');
+   var srvInfoJson = JSON.parse(srvInfo);
 
    var serverVersion, serverEdition, serverVersionNumbers;
 
