@@ -77,11 +77,11 @@ function main()
             //if (logger.isLoggingEnabled()) logger.log("json_requoted_response:\n"+json_requoted_response);
          }
 
-         // replace with a space spurious newlines that could have been stored in a json item, before the feed gets eval'd. see also ALF-11190.
+         // replace with a space spurious newlines that could have been stored in a json item, before the feed gets parsed. see also ALF-11190.
          var escaped_response = json_requoted_response.replace(/(\n|\r\n|\r)/g, " ");
          //if (logger.isLoggingEnabled()) logger.log("escaped_response:\n"+escaped_response);
 
-         var auditresponse = JSON.parse(escaped_response);
+         var auditresponse = jsonUtils.toObject(escaped_response);
          model.auditresponse = auditresponse;
          model.jsonResp = result.response;
       }
@@ -105,7 +105,7 @@ function isJsonQuoteFixRequired(connector)
 {
    // get current server version to determine if a workaround for ALF-8307 is needed.
    var srvInfo = connector.get("/api/server");
-   var srvInfoJson = JSON.parse(srvInfo);
+   var srvInfoJson = jsonUtils.toObject(srvInfo);
 
    var serverVersion, serverEdition, serverVersionNumbers;
 

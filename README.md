@@ -174,6 +174,11 @@ Some sample screenshots with different configurations are included below :
 Changelog
 ---------
 
+0.55:
+
+    - switched back to using the previous, alfresco-provided, JSON parsing utility rather than JSON.parse, which is not available in all supported versions for this dashlet (issue #5).
+    - no new features
+
 0.54:
 
     - replaced the remaining eval calls by JSON.parse, for safety and improved parsing performance

@@ -8,7 +8,7 @@ function getUserIsSiteManager(username)
       var json = remote.call("/api/sites/" + page.url.templateArgs.site + "/memberships/" + stringUtils.urlEncode(username));
       if (json.status == 200)
       {
-         membership = JSON.parse(json);
+         membership = jsonUtils.toObject(json);
       }
    }
    if (membership)
