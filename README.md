@@ -174,6 +174,13 @@ Some sample screenshots with different configurations are included below :
 Changelog
 ---------
 
+0.56:
+
+    - prevent a form a stored XSS in the stored audit values. Addresses GitHub issue #7.
+    - replaced the use of the YUI compressor ant task by a call to the jar directly as the ant task seems to be incompatible with current underlying dependencies
+    - fixed a small unrelated typo
+    - no new features
+
 0.55:
 
     - switched back to using the previous, alfresco-provided, JSON parsing utility rather than JSON.parse, which is not available in all supported versions for this dashlet (issue #5).

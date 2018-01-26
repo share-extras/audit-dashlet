@@ -81,7 +81,11 @@ function main()
          var escaped_response = json_requoted_response.replace(/(\n|\r\n|\r)/g, " ");
          //if (logger.isLoggingEnabled()) logger.log("escaped_response:\n"+escaped_response);
 
-         var auditresponse = jsonUtils.toObject(escaped_response);
+         // prevents some form of stored XSS by preventing HTML tags from being interpreted as part of the stored audit values. addresses GitHub issue #7.
+         var xss_replacements_response = escaped_response.replace(/</g, "&lt;").replace(/\>/g, "&gt;");
+         //if (logger.isLoggingEnabled()) logger.log("xss_replacements_response:\n"+xss_replacements_response);
+
+         var auditresponse = jsonUtils.toObject(xss_replacements_response);
          model.auditresponse = auditresponse;
          model.jsonResp = result.response;
       }

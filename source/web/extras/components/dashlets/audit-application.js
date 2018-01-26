@@ -926,7 +926,7 @@ if (typeof Extras.dashlet == "undefined" || !Extras.dashlet)
 
                }
 
-               // all this additional highlighting work is unncessary if we're looking for negated matches,
+               // all this additional highlighting work is unnecessary if we're looking for negated matches,
                // as there will be no highlighting for those
                if (!negation_predicate_present)
                {

@@ -69,6 +69,7 @@
     <property name="build.zip.dir" value="${build.dir}/war" />
     <property name="build.amp.dir" value="${build.dir}/amp" />
     <property name="dist.dir" value="${basedir}/dist" />
+    <property name="js.dashlet.dir" value="extras/components/dashlets" />
     <property name="amp.file.properties" value="module.properties" />
     <property name="amp.file.mappings" value="file-mapping.properties" />
 
@@ -86,7 +87,7 @@
 
     <path id="yuicompressor.classpath">
         <fileset dir="lib">
-            <include name="yuicompressor-2.4.7.jar"/>
+            <include name="yuicompressor-2.4.8-alfresco-patched.jar"/>
             <include name="yui-compressor-ant-task-0.5.jar"/>
         </fileset>
     </path>
@@ -173,10 +174,19 @@
                 <filename name="share-config-custom.xml" />
             </fileset>
         </copy>
-        <!-- Minify JS -->
-        <yuicompress fromdir="${res.dir}" todir="${build.jar.dir}/META-INF" excludes="**/*-min.js" warn="${yuicompress.warn}">
+
+        <!-- Minify JS ant task : commented out as the ant task is no longer maintained and not compatible with current underlying rhino version -->
+        <!--yuicompress fromdir="${res.dir}" todir="${build.jar.dir}/META-INF" excludes="**/*-min.js" warn="${yuicompress.warn}">
             <include name="**/*.js" />
-        </yuicompress>
+        </yuicompress-->
+
+        <!-- Minify JS by calling the compressor directly -->
+        <echo message="Calling YUI Compressor"/>
+        <java jar="${basedir}/lib/yuicompressor-2.4.8-alfresco-patched.jar" fork="true" failonerror="true">
+            <arg value="${res.dir}/${js.dashlet.dir}/audit-application.js"/>
+            <arg value="-o"/>
+            <arg value="${build.jar.dir}/META-INF/${js.dashlet.dir}/audit-application-min.js"/>
+       </java>
 
         <jar destfile="${dist.dir}/${jar.name}">
             <fileset dir="${build.jar.dir}" />
